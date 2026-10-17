@@ -1,0 +1,11 @@
+node_modules/
+package-lock.json
+/data/
+*.log
+
+# Forum post drafts: pasted by hand on the forum, never committed.
+.github/forum-*.md
+
+# Real files of Bison Futé, kept as published.
+test/fixtures/previsions.json
+test/fixtures/*.xml

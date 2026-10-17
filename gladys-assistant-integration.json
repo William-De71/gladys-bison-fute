@@ -1,0 +1,2167 @@
+{
+  "manifest_version": 1,
+  "type": "device",
+  "name": "Bison Futé",
+  "description": {
+    "en": "French road events near you (closures, accidents, jams) and Bison Futé traffic forecasts.",
+    "fr": "Évènements routiers près de chez vous (fermetures, accidents, bouchons) et prévisions Bison Futé.",
+    "de": "Verkehrsmeldungen in Ihrer Nähe (Sperrungen, Unfälle, Staus) und Bison-Futé-Prognosen.",
+    "es": "Incidencias viales cerca de usted (cortes, accidentes, atascos) y previsiones de Bison Futé."
+  },
+  "version": "0.1.0",
+  "docker_image": "ghcr.io/william-de71/gladys-bison-fute:0.1.0",
+  "gladys_version": ">=5.2.0",
+  "categories": ["services"],
+  "cover_image": "https://raw.githubusercontent.com/William-De71/gladys-bison-fute/main/cover.jpg",
+  "transports": ["cloud"],
+  "location": true,
+  "config_schema": [
+    {
+      "key": "intro",
+      "type": "section",
+      "label": {
+        "en": "Bison Futé",
+        "fr": "Bison Futé",
+        "de": "Bison Futé",
+        "es": "Bison Futé"
+      },
+      "description": {
+        "en": "No account and no key: the integration reads the open data of Bison Futé, the French road information service. The road events (closures, accidents, obstacles, traffic jams, roadworks) come from the road agencies of the State (DIR) and cover the national roads and the motorways without toll; the toll motorways and the departmental roads are not in this feed. The traffic forecast (green, orange, red, black) covers mainland France, without Corsica.",
+        "fr": "Ni compte ni clé : l’intégration lit les données ouvertes de Bison Futé, le service d’information routière de l’État. Les évènements (fermetures, accidents, obstacles, bouchons, chantiers) viennent des directions interdépartementales des routes (DIR) et couvrent les routes nationales et les autoroutes non concédées ; les autoroutes à péage et les routes départementales ne sont pas dans ce flux. Les prévisions de trafic (vert, orange, rouge, noir) couvrent la France métropolitaine, hors Corse.",
+        "de": "Kein Konto und kein Schlüssel: Die Integration liest die offenen Daten von Bison Futé, dem französischen Verkehrsinformationsdienst. Die Meldungen (Sperrungen, Unfälle, Hindernisse, Staus, Baustellen) stammen von den staatlichen Straßenbehörden (DIR) und decken die Nationalstraßen und die mautfreien Autobahnen ab; Mautautobahnen und Departementstraßen sind nicht enthalten. Die Verkehrsprognose (grün, orange, rot, schwarz) deckt das französische Festland ohne Korsika ab.",
+        "es": "Sin cuenta ni clave: la integración lee los datos abiertos de Bison Futé, el servicio francés de información vial. Las incidencias (cortes, accidentes, obstáculos, atascos, obras) proceden de las direcciones de carreteras del Estado (DIR) y cubren las carreteras nacionales y las autopistas sin peaje; las autopistas de peaje y las carreteras departamentales no están en este flujo. La previsión de tráfico (verde, naranja, rojo, negro) cubre la Francia metropolitana, sin Córcega."
+      },
+      "links": [
+        {
+          "url": "https://www.bison-fute.gouv.fr",
+          "label": {
+            "en": "Bison Futé website",
+            "fr": "Site de Bison Futé",
+            "de": "Website von Bison Futé",
+            "es": "Sitio de Bison Futé"
+          }
+        },
+        {
+          "url": "https://transport.data.gouv.fr/datasets/evenements-routiers-sur-le-reseau-routier-national-non-concede",
+          "label": {
+            "en": "The open data used",
+            "fr": "Les données ouvertes utilisées",
+            "de": "Die verwendeten offenen Daten",
+            "es": "Los datos abiertos utilizados"
+          }
+        }
+      ]
+    },
+    {
+      "key": "places",
+      "type": "section",
+      "label": {
+        "en": "Places",
+        "fr": "Lieux",
+        "de": "Orte",
+        "es": "Lugares"
+      },
+      "description": {
+        "en": "Choose a house of Gladys: its location is the centre of the zone, its department gives the forecast (Settings > Houses). Or type a commune: “Mâcon”, “71000”, “Saint-Denis 93200” or its INSEE code. Each place becomes a device in the Discover tab. Up to three places.",
+        "fr": "Choisissez une maison de Gladys : sa position est le centre de la zone, son département donne la prévision (Paramètres > Maisons). Ou saisissez une commune : « Mâcon », « 71000 », « Saint-Denis 93200 » ou son code INSEE. Chaque lieu devient un appareil dans l’onglet Découverte. Jusqu’à trois lieux.",
+        "de": "Wählen Sie ein Haus von Gladys: Sein Standort ist der Mittelpunkt der Zone, sein Departement liefert die Prognose (Einstellungen > Häuser). Oder geben Sie eine Gemeinde ein: „Mâcon“, „71000“, „Saint-Denis 93200“ oder ihren INSEE-Code. Jeder Ort wird zu einem Gerät im Tab Entdecken. Bis zu drei Orte.",
+        "es": "Elija una casa de Gladys: su ubicación es el centro de la zona y su departamento da la previsión (Ajustes > Casas). O escriba un municipio: «Mâcon», «71000», «Saint-Denis 93200» o su código INSEE. Cada lugar se convierte en un dispositivo en la pestaña Descubrir. Hasta tres lugares."
+      }
+    },
+    {
+      "key": "house_1",
+      "type": "select",
+      "source": "houses",
+      "label": {
+        "en": "House",
+        "fr": "Maison",
+        "de": "Haus",
+        "es": "Casa"
+      },
+      "description": {
+        "en": "Its location in Gladys is the centre of the zone.",
+        "fr": "Sa position dans Gladys est le centre de la zone.",
+        "de": "Ihr Standort in Gladys ist der Mittelpunkt der Zone.",
+        "es": "Su ubicación en Gladys es el centro de la zona."
+      },
+      "required": false
+    },
+    {
+      "key": "commune_1",
+      "type": "string",
+      "label": {
+        "en": "Or a commune",
+        "fr": "Ou une commune",
+        "de": "Oder eine Gemeinde",
+        "es": "O un municipio"
+      },
+      "description": {
+        "en": "Name, postal code, “name postal code” or INSEE code: its centre is the centre of the zone. Wins over the house.",
+        "fr": "Nom, code postal, « nom code postal » ou code INSEE : son centre est le centre de la zone. Prioritaire sur la maison.",
+        "de": "Name, Postleitzahl, „Name Postleitzahl“ oder INSEE-Code: ihr Zentrum ist der Mittelpunkt der Zone. Hat Vorrang vor dem Haus.",
+        "es": "Nombre, código postal, «nombre código postal» o código INSEE: su centro es el centro de la zona. Prevalece sobre la casa."
+      },
+      "placeholder": {
+        "en": "Mâcon 71000",
+        "fr": "Mâcon 71000",
+        "de": "Mâcon 71000",
+        "es": "Mâcon 71000"
+      },
+      "required": false
+    },
+    {
+      "key": "radius_1",
+      "type": "number",
+      "label": {
+        "en": "Radius (km)",
+        "fr": "Rayon (km)",
+        "de": "Radius (km)",
+        "es": "Radio (km)"
+      },
+      "description": {
+        "en": "Road events within this distance, from 1 to 200 km.",
+        "fr": "Les évènements à moins de cette distance, de 1 à 200 km.",
+        "de": "Meldungen innerhalb dieser Entfernung, von 1 bis 200 km.",
+        "es": "Incidencias a menos de esta distancia, de 1 a 200 km."
+      },
+      "min": 1,
+      "max": 200,
+      "default": 20,
+      "required": false
+    },
+    {
+      "key": "roads_1",
+      "type": "string",
+      "label": {
+        "en": "Only these roads",
+        "fr": "Seulement ces routes",
+        "de": "Nur diese Straßen",
+        "es": "Solo estas carreteras"
+      },
+      "description": {
+        "en": "Road numbers separated by commas, for your usual route. Empty: every road of the zone.",
+        "fr": "Numéros de routes séparés par des virgules, pour votre trajet habituel. Vide : toutes les routes de la zone.",
+        "de": "Straßennummern durch Kommas getrennt, für Ihre übliche Strecke. Leer: alle Straßen der Zone.",
+        "es": "Números de carretera separados por comas, para su trayecto habitual. Vacío: todas las carreteras de la zona."
+      },
+      "placeholder": {
+        "en": "N79, A6",
+        "fr": "N79, A6",
+        "de": "N79, A6",
+        "es": "N79, A6"
+      },
+      "required": false
+    },
+    {
+      "key": "place_2_section",
+      "type": "section",
+      "label": {
+        "en": "Place 2",
+        "fr": "Lieu 2",
+        "de": "Ort 2",
+        "es": "Lugar 2"
+      },
+      "description": {
+        "en": "Another place to follow (a second home, the workplace, a route you often drive). Optional.",
+        "fr": "Un autre lieu à suivre (résidence secondaire, travail, trajet fréquent). Facultatif.",
+        "de": "Ein weiterer Ort (Zweitwohnung, Arbeitsplatz, häufige Strecke). Optional.",
+        "es": "Otro lugar que seguir (segunda residencia, trabajo, trayecto frecuente). Opcional."
+      }
+    },
+    {
+      "key": "house_2",
+      "type": "select",
+      "source": "houses",
+      "label": {
+        "en": "House",
+        "fr": "Maison",
+        "de": "Haus",
+        "es": "Casa"
+      },
+      "description": {
+        "en": "Its location in Gladys is the centre of the zone.",
+        "fr": "Sa position dans Gladys est le centre de la zone.",
+        "de": "Ihr Standort in Gladys ist der Mittelpunkt der Zone.",
+        "es": "Su ubicación en Gladys es el centro de la zona."
+      },
+      "required": false
+    },
+    {
+      "key": "commune_2",
+      "type": "string",
+      "label": {
+        "en": "Or a commune",
+        "fr": "Ou une commune",
+        "de": "Oder eine Gemeinde",
+        "es": "O un municipio"
+      },
+      "description": {
+        "en": "Name, postal code, “name postal code” or INSEE code: its centre is the centre of the zone. Wins over the house.",
+        "fr": "Nom, code postal, « nom code postal » ou code INSEE : son centre est le centre de la zone. Prioritaire sur la maison.",
+        "de": "Name, Postleitzahl, „Name Postleitzahl“ oder INSEE-Code: ihr Zentrum ist der Mittelpunkt der Zone. Hat Vorrang vor dem Haus.",
+        "es": "Nombre, código postal, «nombre código postal» o código INSEE: su centro es el centro de la zona. Prevalece sobre la casa."
+      },
+      "placeholder": {
+        "en": "Mâcon 71000",
+        "fr": "Mâcon 71000",
+        "de": "Mâcon 71000",
+        "es": "Mâcon 71000"
+      },
+      "required": false
+    },
+    {
+      "key": "radius_2",
+      "type": "number",
+      "label": {
+        "en": "Radius (km)",
+        "fr": "Rayon (km)",
+        "de": "Radius (km)",
+        "es": "Radio (km)"
+      },
+      "description": {
+        "en": "Road events within this distance, from 1 to 200 km.",
+        "fr": "Les évènements à moins de cette distance, de 1 à 200 km.",
+        "de": "Meldungen innerhalb dieser Entfernung, von 1 bis 200 km.",
+        "es": "Incidencias a menos de esta distancia, de 1 a 200 km."
+      },
+      "min": 1,
+      "max": 200,
+      "default": 20,
+      "required": false
+    },
+    {
+      "key": "roads_2",
+      "type": "string",
+      "label": {
+        "en": "Only these roads",
+        "fr": "Seulement ces routes",
+        "de": "Nur diese Straßen",
+        "es": "Solo estas carreteras"
+      },
+      "description": {
+        "en": "Road numbers separated by commas, for your usual route. Empty: every road of the zone.",
+        "fr": "Numéros de routes séparés par des virgules, pour votre trajet habituel. Vide : toutes les routes de la zone.",
+        "de": "Straßennummern durch Kommas getrennt, für Ihre übliche Strecke. Leer: alle Straßen der Zone.",
+        "es": "Números de carretera separados por comas, para su trayecto habitual. Vacío: todas las carreteras de la zona."
+      },
+      "placeholder": {
+        "en": "N79, A6",
+        "fr": "N79, A6",
+        "de": "N79, A6",
+        "es": "N79, A6"
+      },
+      "required": false
+    },
+    {
+      "key": "place_3_section",
+      "type": "section",
+      "label": {
+        "en": "Place 3",
+        "fr": "Lieu 3",
+        "de": "Ort 3",
+        "es": "Lugar 3"
+      },
+      "description": {
+        "en": "Another place to follow (a second home, the workplace, a route you often drive). Optional.",
+        "fr": "Un autre lieu à suivre (résidence secondaire, travail, trajet fréquent). Facultatif.",
+        "de": "Ein weiterer Ort (Zweitwohnung, Arbeitsplatz, häufige Strecke). Optional.",
+        "es": "Otro lugar que seguir (segunda residencia, trabajo, trayecto frecuente). Opcional."
+      }
+    },
+    {
+      "key": "house_3",
+      "type": "select",
+      "source": "houses",
+      "label": {
+        "en": "House",
+        "fr": "Maison",
+        "de": "Haus",
+        "es": "Casa"
+      },
+      "description": {
+        "en": "Its location in Gladys is the centre of the zone.",
+        "fr": "Sa position dans Gladys est le centre de la zone.",
+        "de": "Ihr Standort in Gladys ist der Mittelpunkt der Zone.",
+        "es": "Su ubicación en Gladys es el centro de la zona."
+      },
+      "required": false
+    },
+    {
+      "key": "commune_3",
+      "type": "string",
+      "label": {
+        "en": "Or a commune",
+        "fr": "Ou une commune",
+        "de": "Oder eine Gemeinde",
+        "es": "O un municipio"
+      },
+      "description": {
+        "en": "Name, postal code, “name postal code” or INSEE code: its centre is the centre of the zone. Wins over the house.",
+        "fr": "Nom, code postal, « nom code postal » ou code INSEE : son centre est le centre de la zone. Prioritaire sur la maison.",
+        "de": "Name, Postleitzahl, „Name Postleitzahl“ oder INSEE-Code: ihr Zentrum ist der Mittelpunkt der Zone. Hat Vorrang vor dem Haus.",
+        "es": "Nombre, código postal, «nombre código postal» o código INSEE: su centro es el centro de la zona. Prevalece sobre la casa."
+      },
+      "placeholder": {
+        "en": "Mâcon 71000",
+        "fr": "Mâcon 71000",
+        "de": "Mâcon 71000",
+        "es": "Mâcon 71000"
+      },
+      "required": false
+    },
+    {
+      "key": "radius_3",
+      "type": "number",
+      "label": {
+        "en": "Radius (km)",
+        "fr": "Rayon (km)",
+        "de": "Radius (km)",
+        "es": "Radio (km)"
+      },
+      "description": {
+        "en": "Road events within this distance, from 1 to 200 km.",
+        "fr": "Les évènements à moins de cette distance, de 1 à 200 km.",
+        "de": "Meldungen innerhalb dieser Entfernung, von 1 bis 200 km.",
+        "es": "Incidencias a menos de esta distancia, de 1 a 200 km."
+      },
+      "min": 1,
+      "max": 200,
+      "default": 20,
+      "required": false
+    },
+    {
+      "key": "roads_3",
+      "type": "string",
+      "label": {
+        "en": "Only these roads",
+        "fr": "Seulement ces routes",
+        "de": "Nur diese Straßen",
+        "es": "Solo estas carreteras"
+      },
+      "description": {
+        "en": "Road numbers separated by commas, for your usual route. Empty: every road of the zone.",
+        "fr": "Numéros de routes séparés par des virgules, pour votre trajet habituel. Vide : toutes les routes de la zone.",
+        "de": "Straßennummern durch Kommas getrennt, für Ihre übliche Strecke. Leer: alle Straßen der Zone.",
+        "es": "Números de carretera separados por comas, para su trayecto habitual. Vacío: todas las carreteras de la zona."
+      },
+      "placeholder": {
+        "en": "N79, A6",
+        "fr": "N79, A6",
+        "de": "N79, A6",
+        "es": "N79, A6"
+      },
+      "required": false
+    },
+    {
+      "key": "options",
+      "type": "section",
+      "label": {
+        "en": "Options",
+        "fr": "Options",
+        "de": "Optionen",
+        "es": "Opciones"
+      }
+    },
+    {
+      "key": "interval",
+      "type": "select",
+      "default": "5",
+      "required": false,
+      "label": {
+        "en": "Road events read every",
+        "fr": "Évènements lus toutes les",
+        "de": "Meldungen gelesen alle",
+        "es": "Incidencias leídas cada"
+      },
+      "description": {
+        "en": "Each reading downloads about 150 KB when the feed changed, almost nothing otherwise.",
+        "fr": "Chaque lecture télécharge environ 150 Ko quand le flux a changé, presque rien sinon.",
+        "de": "Jede Abfrage lädt etwa 150 KB herunter, wenn sich der Feed geändert hat, sonst fast nichts.",
+        "es": "Cada lectura descarga unos 150 KB cuando el flujo ha cambiado, casi nada en caso contrario."
+      },
+      "options": [
+        {
+          "value": "2",
+          "label": {
+            "en": "2 minutes",
+            "fr": "2 minutes",
+            "de": "2 Minuten",
+            "es": "2 minutos"
+          }
+        },
+        {
+          "value": "5",
+          "label": {
+            "en": "5 minutes",
+            "fr": "5 minutes",
+            "de": "5 Minuten",
+            "es": "5 minutos"
+          }
+        },
+        {
+          "value": "10",
+          "label": {
+            "en": "10 minutes",
+            "fr": "10 minutes",
+            "de": "10 Minuten",
+            "es": "10 minutos"
+          }
+        },
+        {
+          "value": "15",
+          "label": {
+            "en": "15 minutes",
+            "fr": "15 minutes",
+            "de": "15 Minuten",
+            "es": "15 minutos"
+          }
+        },
+        {
+          "value": "30",
+          "label": {
+            "en": "30 minutes",
+            "fr": "30 minutes",
+            "de": "30 Minuten",
+            "es": "30 minutos"
+          }
+        }
+      ]
+    },
+    {
+      "key": "language",
+      "type": "select",
+      "default": "auto",
+      "required": false,
+      "label": {
+        "en": "Language of the texts",
+        "fr": "Langue des textes",
+        "de": "Sprache der Texte",
+        "es": "Idioma de los textos"
+      },
+      "description": {
+        "en": "Names of the devices, closest event, scene summaries. Automatic: the language of your dashboard, once a Bison Futé widget has been displayed (French before). The descriptions of the road operators stay in French.",
+        "fr": "Noms des appareils, évènement le plus proche, résumés des scènes. Automatique : la langue de votre tableau de bord, dès qu’un widget Bison Futé a été affiché (français avant). Les descriptions des exploitants restent en français.",
+        "de": "Gerätenamen, nächste Meldung, Szenen-Zusammenfassungen. Automatisch: die Sprache Ihres Dashboards, sobald ein Bison-Futé-Widget angezeigt wurde (vorher Französisch). Die Beschreibungen der Straßenbetreiber bleiben auf Französisch.",
+        "es": "Nombres de los dispositivos, incidencia más cercana, resúmenes de escenas. Automático: el idioma de su panel, en cuanto se haya mostrado un widget de Bison Futé (antes, francés). Las descripciones de los gestores viales siguen en francés."
+      },
+      "options": [
+        {
+          "value": "auto",
+          "label": {
+            "en": "Automatic",
+            "fr": "Automatique",
+            "de": "Automatisch",
+            "es": "Automático"
+          }
+        },
+        {
+          "value": "en",
+          "label": {
+            "en": "English",
+            "fr": "English",
+            "de": "English",
+            "es": "English"
+          }
+        },
+        {
+          "value": "fr",
+          "label": {
+            "en": "Français",
+            "fr": "Français",
+            "de": "Français",
+            "es": "Français"
+          }
+        },
+        {
+          "value": "de",
+          "label": {
+            "en": "Deutsch",
+            "fr": "Deutsch",
+            "de": "Deutsch",
+            "es": "Deutsch"
+          }
+        },
+        {
+          "value": "es",
+          "label": {
+            "en": "Español",
+            "fr": "Español",
+            "de": "Español",
+            "es": "Español"
+          }
+        }
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "key": "refresh",
+      "timeout_seconds": 90,
+      "label": {
+        "en": "Read now",
+        "fr": "Lire maintenant",
+        "de": "Jetzt lesen",
+        "es": "Leer ahora"
+      },
+      "description": {
+        "en": "Finds the places again and reads the road events and the forecast now, instead of waiting for the next reading.",
+        "fr": "Retrouve les lieux et lit les évènements et la prévision tout de suite, sans attendre la prochaine lecture.",
+        "de": "Ermittelt die Orte neu und liest Meldungen und Prognose sofort, ohne auf die nächste Abfrage zu warten.",
+        "es": "Vuelve a buscar los lugares y lee las incidencias y la previsión ahora, sin esperar a la próxima lectura."
+      }
+    },
+    {
+      "key": "diagnostic",
+      "timeout_seconds": 10,
+      "label": {
+        "en": "Diagnostic",
+        "fr": "Diagnostic",
+        "de": "Diagnose",
+        "es": "Diagnóstico"
+      },
+      "description": {
+        "en": "Writes to the Logs tab the places found, the events of each zone, the last error and the requests made, for a report on GitHub or the forum.",
+        "fr": "Écrit dans l’onglet Journaux les lieux trouvés, les évènements de chaque zone, la dernière erreur et les requêtes faites, pour un retour sur GitHub ou le forum.",
+        "de": "Schreibt in den Tab Protokolle die gefundenen Orte, die Meldungen jeder Zone, den letzten Fehler und die Anfragen, für eine Meldung auf GitHub oder im Forum.",
+        "es": "Escribe en la pestaña Registros los lugares encontrados, las incidencias de cada zona, el último error y las peticiones hechas, para un informe en GitHub o el foro."
+      }
+    }
+  ],
+  "widgets": [
+    {
+      "key": "traffic",
+      "icon": "alert-triangle",
+      "label": {
+        "en": "Road traffic",
+        "fr": "Trafic routier",
+        "de": "Straßenverkehr",
+        "es": "Tráfico vial"
+      },
+      "description": {
+        "en": "Closures, accidents, traffic jams and roadworks around a place.",
+        "fr": "Fermetures, accidents, bouchons et chantiers autour d’un lieu.",
+        "de": "Sperrungen, Unfälle, Staus und Baustellen rund um einen Ort.",
+        "es": "Cortes, accidentes, atascos y obras alrededor de un lugar."
+      },
+      "settings": [
+        {
+          "key": "place",
+          "type": "select",
+          "source": "devices",
+          "label": {
+            "en": "Place",
+            "fr": "Lieu",
+            "de": "Ort",
+            "es": "Lugar"
+          },
+          "description": {
+            "en": "Empty: the first place.",
+            "fr": "Vide : le premier lieu.",
+            "de": "Leer: der erste Ort.",
+            "es": "Vacío: el primer lugar."
+          },
+          "required": false
+        }
+      ]
+    },
+    {
+      "key": "forecast",
+      "icon": "calendar",
+      "label": {
+        "en": "Bison Futé forecast",
+        "fr": "Prévisions Bison Futé",
+        "de": "Bison-Futé-Prognose",
+        "es": "Previsión Bison Futé"
+      },
+      "description": {
+        "en": "Green, orange, red or black days of the department, departures and returns.",
+        "fr": "Jours vert, orange, rouge ou noir du département, départs et retours.",
+        "de": "Grüne, orange, rote oder schwarze Tage des Departements, Hin- und Rückfahrt.",
+        "es": "Días verdes, naranjas, rojos o negros del departamento, salidas y regresos."
+      },
+      "settings": [
+        {
+          "key": "place",
+          "type": "select",
+          "source": "devices",
+          "label": {
+            "en": "Place",
+            "fr": "Lieu",
+            "de": "Ort",
+            "es": "Lugar"
+          },
+          "description": {
+            "en": "Empty: the first place.",
+            "fr": "Vide : le premier lieu.",
+            "de": "Leer: der erste Ort.",
+            "es": "Vacío: el primer lugar."
+          },
+          "required": false
+        }
+      ]
+    }
+  ],
+  "scene_triggers": [
+    {
+      "key": "event_started",
+      "label": {
+        "en": "Bison Futé: road event started",
+        "fr": "Bison Futé : évènement routier en cours",
+        "de": "Bison Futé: Verkehrsmeldung begonnen",
+        "es": "Bison Futé: incidencia vial iniciada"
+      },
+      "description": {
+        "en": "A road event becomes active in the zone of a place: a new accident, a closure that starts, a traffic jam.",
+        "fr": "Un évènement devient actif dans la zone d’un lieu : un nouvel accident, une fermeture qui commence, un bouchon.",
+        "de": "Eine Meldung wird in der Zone eines Ortes aktiv: ein neuer Unfall, eine beginnende Sperrung, ein Stau.",
+        "es": "Una incidencia se activa en la zona de un lugar: un nuevo accidente, un corte que empieza, un atasco."
+      },
+      "fields": [
+        {
+          "key": "place",
+          "type": "select",
+          "source": "devices",
+          "label": {
+            "en": "Place",
+            "fr": "Lieu",
+            "de": "Ort",
+            "es": "Lugar"
+          },
+          "description": {
+            "en": "Leave empty for any.",
+            "fr": "Laissez vide pour tous.",
+            "de": "Leer lassen für alle.",
+            "es": "Déjelo vacío para todos."
+          },
+          "required": false
+        },
+        {
+          "key": "category",
+          "type": "multi_select",
+          "label": {
+            "en": "Types",
+            "fr": "Types",
+            "de": "Arten",
+            "es": "Tipos"
+          },
+          "description": {
+            "en": "Leave empty for any.",
+            "fr": "Laissez vide pour tous.",
+            "de": "Leer lassen für alle.",
+            "es": "Déjelo vacío para todos."
+          },
+          "required": false,
+          "options": [
+            {
+              "value": "closure",
+              "label": {
+                "en": "Road closed",
+                "fr": "Fermeture",
+                "de": "Sperrung",
+                "es": "Corte de carretera"
+              }
+            },
+            {
+              "value": "accident",
+              "label": {
+                "en": "Accident",
+                "fr": "Accident",
+                "de": "Unfall",
+                "es": "Accidente"
+              }
+            },
+            {
+              "value": "obstruction",
+              "label": {
+                "en": "Obstacle (broken-down vehicle, object, animal…)",
+                "fr": "Obstacle (véhicule en panne, objet, animal…)",
+                "de": "Hindernis (Pannenfahrzeug, Gegenstand, Tier…)",
+                "es": "Obstáculo (vehículo averiado, objeto, animal…)"
+              }
+            },
+            {
+              "value": "congestion",
+              "label": {
+                "en": "Traffic jam",
+                "fr": "Bouchon",
+                "de": "Stau",
+                "es": "Atasco"
+              }
+            },
+            {
+              "value": "conditions",
+              "label": {
+                "en": "Road conditions (snow, ice, fog…)",
+                "fr": "Conditions de circulation (neige, verglas, brouillard…)",
+                "de": "Straßenzustand (Schnee, Glätte, Nebel…)",
+                "es": "Estado de la vía (nieve, hielo, niebla…)"
+              }
+            },
+            {
+              "value": "roadworks",
+              "label": {
+                "en": "Roadworks",
+                "fr": "Chantier",
+                "de": "Baustelle",
+                "es": "Obras"
+              }
+            },
+            {
+              "value": "restriction",
+              "label": {
+                "en": "Restriction (lane closed, speed limit, diversion…)",
+                "fr": "Restriction (voie fermée, limitation de vitesse, déviation…)",
+                "de": "Einschränkung (Fahrstreifen gesperrt, Tempolimit, Umleitung…)",
+                "es": "Restricción (carril cerrado, límite de velocidad, desvío…)"
+              }
+            },
+            {
+              "value": "other",
+              "label": {
+                "en": "Other information",
+                "fr": "Autre information",
+                "de": "Sonstige Information",
+                "es": "Otra información"
+              }
+            }
+          ]
+        },
+        {
+          "key": "road",
+          "type": "string",
+          "label": {
+            "en": "Road",
+            "fr": "Route",
+            "de": "Straße",
+            "es": "Carretera"
+          },
+          "description": {
+            "en": "A road number, like N79 or A6. Leave empty for any.",
+            "fr": "Un numéro de route, comme N79 ou A6. Laissez vide pour toutes.",
+            "de": "Eine Straßennummer wie N79 oder A6. Leer lassen für alle.",
+            "es": "Un número de carretera, como N79 o A6. Déjelo vacío para todas."
+          },
+          "placeholder": {
+            "en": "N79",
+            "fr": "N79",
+            "de": "N79",
+            "es": "N79"
+          },
+          "required": false
+        }
+      ],
+      "variables": [
+        {
+          "key": "place_name",
+          "type": "string",
+          "label": {
+            "en": "Place",
+            "fr": "Lieu",
+            "de": "Ort",
+            "es": "Lugar"
+          }
+        },
+        {
+          "key": "event_id",
+          "type": "string",
+          "label": {
+            "en": "Event id",
+            "fr": "Identifiant de l’évènement",
+            "de": "Meldungs-ID",
+            "es": "Id. de la incidencia"
+          }
+        },
+        {
+          "key": "category",
+          "type": "string",
+          "label": {
+            "en": "Type (key)",
+            "fr": "Type (clé)",
+            "de": "Art (Schlüssel)",
+            "es": "Tipo (clave)"
+          },
+          "description": {
+            "en": "closure, accident, obstruction, congestion, conditions, roadworks, restriction or other.",
+            "fr": "closure, accident, obstruction, congestion, conditions, roadworks, restriction ou other.",
+            "de": "closure, accident, obstruction, congestion, conditions, roadworks, restriction oder other.",
+            "es": "closure, accident, obstruction, congestion, conditions, roadworks, restriction u other."
+          }
+        },
+        {
+          "key": "category_label",
+          "type": "string",
+          "label": {
+            "en": "Type",
+            "fr": "Type",
+            "de": "Art",
+            "es": "Tipo"
+          }
+        },
+        {
+          "key": "road",
+          "type": "string",
+          "label": {
+            "en": "Road",
+            "fr": "Route",
+            "de": "Straße",
+            "es": "Carretera"
+          }
+        },
+        {
+          "key": "town",
+          "type": "string",
+          "label": {
+            "en": "Town",
+            "fr": "Commune",
+            "de": "Ort",
+            "es": "Localidad"
+          }
+        },
+        {
+          "key": "direction",
+          "type": "string",
+          "label": {
+            "en": "Direction",
+            "fr": "Sens",
+            "de": "Richtung",
+            "es": "Sentido"
+          },
+          "description": {
+            "en": "As written by the operator, in French: “De Lyon vers Paris”.",
+            "fr": "Tel qu’écrit par l’exploitant : « De Lyon vers Paris ».",
+            "de": "Wie vom Betreiber geschrieben, auf Französisch: „De Lyon vers Paris“.",
+            "es": "Tal como lo escribe el gestor, en francés: «De Lyon vers Paris»."
+          }
+        },
+        {
+          "key": "description",
+          "type": "string",
+          "label": {
+            "en": "Description",
+            "fr": "Description",
+            "de": "Beschreibung",
+            "es": "Descripción"
+          },
+          "description": {
+            "en": "Written by the operator, in French.",
+            "fr": "Écrite par l’exploitant.",
+            "de": "Vom Betreiber geschrieben, auf Französisch.",
+            "es": "Escrita por el gestor, en francés."
+          }
+        },
+        {
+          "key": "distance_km",
+          "type": "number",
+          "label": {
+            "en": "Distance (km)",
+            "fr": "Distance (km)",
+            "de": "Entfernung (km)",
+            "es": "Distancia (km)"
+          }
+        },
+        {
+          "key": "severity",
+          "type": "string",
+          "label": {
+            "en": "Severity",
+            "fr": "Gravité",
+            "de": "Schweregrad",
+            "es": "Gravedad"
+          },
+          "description": {
+            "en": "lowest, low, medium, high or highest.",
+            "fr": "lowest, low, medium, high ou highest.",
+            "de": "lowest, low, medium, high oder highest.",
+            "es": "lowest, low, medium, high o highest."
+          }
+        },
+        {
+          "key": "start",
+          "type": "string",
+          "label": {
+            "en": "Start",
+            "fr": "Début",
+            "de": "Beginn",
+            "es": "Inicio"
+          },
+          "description": {
+            "en": "ISO 8601 date.",
+            "fr": "Date ISO 8601.",
+            "de": "ISO-8601-Datum.",
+            "es": "Fecha ISO 8601."
+          }
+        },
+        {
+          "key": "end",
+          "type": "string",
+          "label": {
+            "en": "End",
+            "fr": "Fin",
+            "de": "Ende",
+            "es": "Fin"
+          },
+          "description": {
+            "en": "ISO 8601 date, empty when not known.",
+            "fr": "Date ISO 8601, vide si inconnue.",
+            "de": "ISO-8601-Datum, leer wenn unbekannt.",
+            "es": "Fecha ISO 8601, vacía si se desconoce."
+          }
+        },
+        {
+          "key": "summary",
+          "type": "string",
+          "label": {
+            "en": "Summary",
+            "fr": "Résumé",
+            "de": "Zusammenfassung",
+            "es": "Resumen"
+          },
+          "description": {
+            "en": "A sentence ready for a message.",
+            "fr": "Une phrase prête pour un message.",
+            "de": "Ein Satz, bereit für eine Nachricht.",
+            "es": "Una frase lista para un mensaje."
+          }
+        }
+      ]
+    },
+    {
+      "key": "event_ended",
+      "label": {
+        "en": "Bison Futé: road event over",
+        "fr": "Bison Futé : évènement routier terminé",
+        "de": "Bison Futé: Verkehrsmeldung beendet",
+        "es": "Bison Futé: incidencia vial terminada"
+      },
+      "description": {
+        "en": "An active road event of the zone is over: the road reopens, the accident is cleared.",
+        "fr": "Un évènement actif de la zone est terminé : la route rouvre, l’accident est dégagé.",
+        "de": "Eine aktive Meldung der Zone ist beendet: die Straße ist wieder frei, der Unfall geräumt.",
+        "es": "Una incidencia activa de la zona ha terminado: la carretera se reabre, el accidente se despeja."
+      },
+      "fields": [
+        {
+          "key": "place",
+          "type": "select",
+          "source": "devices",
+          "label": {
+            "en": "Place",
+            "fr": "Lieu",
+            "de": "Ort",
+            "es": "Lugar"
+          },
+          "description": {
+            "en": "Leave empty for any.",
+            "fr": "Laissez vide pour tous.",
+            "de": "Leer lassen für alle.",
+            "es": "Déjelo vacío para todos."
+          },
+          "required": false
+        },
+        {
+          "key": "category",
+          "type": "multi_select",
+          "label": {
+            "en": "Types",
+            "fr": "Types",
+            "de": "Arten",
+            "es": "Tipos"
+          },
+          "description": {
+            "en": "Leave empty for any.",
+            "fr": "Laissez vide pour tous.",
+            "de": "Leer lassen für alle.",
+            "es": "Déjelo vacío para todos."
+          },
+          "required": false,
+          "options": [
+            {
+              "value": "closure",
+              "label": {
+                "en": "Road closed",
+                "fr": "Fermeture",
+                "de": "Sperrung",
+                "es": "Corte de carretera"
+              }
+            },
+            {
+              "value": "accident",
+              "label": {
+                "en": "Accident",
+                "fr": "Accident",
+                "de": "Unfall",
+                "es": "Accidente"
+              }
+            },
+            {
+              "value": "obstruction",
+              "label": {
+                "en": "Obstacle (broken-down vehicle, object, animal…)",
+                "fr": "Obstacle (véhicule en panne, objet, animal…)",
+                "de": "Hindernis (Pannenfahrzeug, Gegenstand, Tier…)",
+                "es": "Obstáculo (vehículo averiado, objeto, animal…)"
+              }
+            },
+            {
+              "value": "congestion",
+              "label": {
+                "en": "Traffic jam",
+                "fr": "Bouchon",
+                "de": "Stau",
+                "es": "Atasco"
+              }
+            },
+            {
+              "value": "conditions",
+              "label": {
+                "en": "Road conditions (snow, ice, fog…)",
+                "fr": "Conditions de circulation (neige, verglas, brouillard…)",
+                "de": "Straßenzustand (Schnee, Glätte, Nebel…)",
+                "es": "Estado de la vía (nieve, hielo, niebla…)"
+              }
+            },
+            {
+              "value": "roadworks",
+              "label": {
+                "en": "Roadworks",
+                "fr": "Chantier",
+                "de": "Baustelle",
+                "es": "Obras"
+              }
+            },
+            {
+              "value": "restriction",
+              "label": {
+                "en": "Restriction (lane closed, speed limit, diversion…)",
+                "fr": "Restriction (voie fermée, limitation de vitesse, déviation…)",
+                "de": "Einschränkung (Fahrstreifen gesperrt, Tempolimit, Umleitung…)",
+                "es": "Restricción (carril cerrado, límite de velocidad, desvío…)"
+              }
+            },
+            {
+              "value": "other",
+              "label": {
+                "en": "Other information",
+                "fr": "Autre information",
+                "de": "Sonstige Information",
+                "es": "Otra información"
+              }
+            }
+          ]
+        },
+        {
+          "key": "road",
+          "type": "string",
+          "label": {
+            "en": "Road",
+            "fr": "Route",
+            "de": "Straße",
+            "es": "Carretera"
+          },
+          "description": {
+            "en": "A road number, like N79 or A6. Leave empty for any.",
+            "fr": "Un numéro de route, comme N79 ou A6. Laissez vide pour toutes.",
+            "de": "Eine Straßennummer wie N79 oder A6. Leer lassen für alle.",
+            "es": "Un número de carretera, como N79 o A6. Déjelo vacío para todas."
+          },
+          "placeholder": {
+            "en": "N79",
+            "fr": "N79",
+            "de": "N79",
+            "es": "N79"
+          },
+          "required": false
+        }
+      ],
+      "variables": [
+        {
+          "key": "place_name",
+          "type": "string",
+          "label": {
+            "en": "Place",
+            "fr": "Lieu",
+            "de": "Ort",
+            "es": "Lugar"
+          }
+        },
+        {
+          "key": "event_id",
+          "type": "string",
+          "label": {
+            "en": "Event id",
+            "fr": "Identifiant de l’évènement",
+            "de": "Meldungs-ID",
+            "es": "Id. de la incidencia"
+          }
+        },
+        {
+          "key": "category",
+          "type": "string",
+          "label": {
+            "en": "Type (key)",
+            "fr": "Type (clé)",
+            "de": "Art (Schlüssel)",
+            "es": "Tipo (clave)"
+          },
+          "description": {
+            "en": "closure, accident, obstruction, congestion, conditions, roadworks, restriction or other.",
+            "fr": "closure, accident, obstruction, congestion, conditions, roadworks, restriction ou other.",
+            "de": "closure, accident, obstruction, congestion, conditions, roadworks, restriction oder other.",
+            "es": "closure, accident, obstruction, congestion, conditions, roadworks, restriction u other."
+          }
+        },
+        {
+          "key": "category_label",
+          "type": "string",
+          "label": {
+            "en": "Type",
+            "fr": "Type",
+            "de": "Art",
+            "es": "Tipo"
+          }
+        },
+        {
+          "key": "road",
+          "type": "string",
+          "label": {
+            "en": "Road",
+            "fr": "Route",
+            "de": "Straße",
+            "es": "Carretera"
+          }
+        },
+        {
+          "key": "town",
+          "type": "string",
+          "label": {
+            "en": "Town",
+            "fr": "Commune",
+            "de": "Ort",
+            "es": "Localidad"
+          }
+        },
+        {
+          "key": "duration_minutes",
+          "type": "number",
+          "label": {
+            "en": "Duration (minutes)",
+            "fr": "Durée (minutes)",
+            "de": "Dauer (Minuten)",
+            "es": "Duración (minutos)"
+          }
+        },
+        {
+          "key": "summary",
+          "type": "string",
+          "label": {
+            "en": "Summary",
+            "fr": "Résumé",
+            "de": "Zusammenfassung",
+            "es": "Resumen"
+          },
+          "description": {
+            "en": "A sentence ready for a message.",
+            "fr": "Une phrase prête pour un message.",
+            "de": "Ein Satz, bereit für eine Nachricht.",
+            "es": "Una frase lista para un mensaje."
+          }
+        }
+      ]
+    },
+    {
+      "key": "event_planned",
+      "label": {
+        "en": "Bison Futé: road event planned",
+        "fr": "Bison Futé : évènement routier prévu",
+        "de": "Bison Futé: Verkehrsmeldung geplant",
+        "es": "Bison Futé: incidencia vial prevista"
+      },
+      "description": {
+        "en": "A road event is announced in the zone for the next seven days, like a night closure for roadworks.",
+        "fr": "Un évènement est annoncé dans la zone pour les sept prochains jours, comme une fermeture de nuit pour chantier.",
+        "de": "Eine Meldung wird für die nächsten sieben Tage in der Zone angekündigt, etwa eine nächtliche Sperrung wegen Bauarbeiten.",
+        "es": "Se anuncia una incidencia en la zona para los próximos siete días, como un corte nocturno por obras."
+      },
+      "fields": [
+        {
+          "key": "place",
+          "type": "select",
+          "source": "devices",
+          "label": {
+            "en": "Place",
+            "fr": "Lieu",
+            "de": "Ort",
+            "es": "Lugar"
+          },
+          "description": {
+            "en": "Leave empty for any.",
+            "fr": "Laissez vide pour tous.",
+            "de": "Leer lassen für alle.",
+            "es": "Déjelo vacío para todos."
+          },
+          "required": false
+        },
+        {
+          "key": "category",
+          "type": "multi_select",
+          "label": {
+            "en": "Types",
+            "fr": "Types",
+            "de": "Arten",
+            "es": "Tipos"
+          },
+          "description": {
+            "en": "Leave empty for any.",
+            "fr": "Laissez vide pour tous.",
+            "de": "Leer lassen für alle.",
+            "es": "Déjelo vacío para todos."
+          },
+          "required": false,
+          "options": [
+            {
+              "value": "closure",
+              "label": {
+                "en": "Road closed",
+                "fr": "Fermeture",
+                "de": "Sperrung",
+                "es": "Corte de carretera"
+              }
+            },
+            {
+              "value": "accident",
+              "label": {
+                "en": "Accident",
+                "fr": "Accident",
+                "de": "Unfall",
+                "es": "Accidente"
+              }
+            },
+            {
+              "value": "obstruction",
+              "label": {
+                "en": "Obstacle (broken-down vehicle, object, animal…)",
+                "fr": "Obstacle (véhicule en panne, objet, animal…)",
+                "de": "Hindernis (Pannenfahrzeug, Gegenstand, Tier…)",
+                "es": "Obstáculo (vehículo averiado, objeto, animal…)"
+              }
+            },
+            {
+              "value": "congestion",
+              "label": {
+                "en": "Traffic jam",
+                "fr": "Bouchon",
+                "de": "Stau",
+                "es": "Atasco"
+              }
+            },
+            {
+              "value": "conditions",
+              "label": {
+                "en": "Road conditions (snow, ice, fog…)",
+                "fr": "Conditions de circulation (neige, verglas, brouillard…)",
+                "de": "Straßenzustand (Schnee, Glätte, Nebel…)",
+                "es": "Estado de la vía (nieve, hielo, niebla…)"
+              }
+            },
+            {
+              "value": "roadworks",
+              "label": {
+                "en": "Roadworks",
+                "fr": "Chantier",
+                "de": "Baustelle",
+                "es": "Obras"
+              }
+            },
+            {
+              "value": "restriction",
+              "label": {
+                "en": "Restriction (lane closed, speed limit, diversion…)",
+                "fr": "Restriction (voie fermée, limitation de vitesse, déviation…)",
+                "de": "Einschränkung (Fahrstreifen gesperrt, Tempolimit, Umleitung…)",
+                "es": "Restricción (carril cerrado, límite de velocidad, desvío…)"
+              }
+            },
+            {
+              "value": "other",
+              "label": {
+                "en": "Other information",
+                "fr": "Autre information",
+                "de": "Sonstige Information",
+                "es": "Otra información"
+              }
+            }
+          ]
+        },
+        {
+          "key": "road",
+          "type": "string",
+          "label": {
+            "en": "Road",
+            "fr": "Route",
+            "de": "Straße",
+            "es": "Carretera"
+          },
+          "description": {
+            "en": "A road number, like N79 or A6. Leave empty for any.",
+            "fr": "Un numéro de route, comme N79 ou A6. Laissez vide pour toutes.",
+            "de": "Eine Straßennummer wie N79 oder A6. Leer lassen für alle.",
+            "es": "Un número de carretera, como N79 o A6. Déjelo vacío para todas."
+          },
+          "placeholder": {
+            "en": "N79",
+            "fr": "N79",
+            "de": "N79",
+            "es": "N79"
+          },
+          "required": false
+        }
+      ],
+      "variables": [
+        {
+          "key": "place_name",
+          "type": "string",
+          "label": {
+            "en": "Place",
+            "fr": "Lieu",
+            "de": "Ort",
+            "es": "Lugar"
+          }
+        },
+        {
+          "key": "event_id",
+          "type": "string",
+          "label": {
+            "en": "Event id",
+            "fr": "Identifiant de l’évènement",
+            "de": "Meldungs-ID",
+            "es": "Id. de la incidencia"
+          }
+        },
+        {
+          "key": "category",
+          "type": "string",
+          "label": {
+            "en": "Type (key)",
+            "fr": "Type (clé)",
+            "de": "Art (Schlüssel)",
+            "es": "Tipo (clave)"
+          },
+          "description": {
+            "en": "closure, accident, obstruction, congestion, conditions, roadworks, restriction or other.",
+            "fr": "closure, accident, obstruction, congestion, conditions, roadworks, restriction ou other.",
+            "de": "closure, accident, obstruction, congestion, conditions, roadworks, restriction oder other.",
+            "es": "closure, accident, obstruction, congestion, conditions, roadworks, restriction u other."
+          }
+        },
+        {
+          "key": "category_label",
+          "type": "string",
+          "label": {
+            "en": "Type",
+            "fr": "Type",
+            "de": "Art",
+            "es": "Tipo"
+          }
+        },
+        {
+          "key": "road",
+          "type": "string",
+          "label": {
+            "en": "Road",
+            "fr": "Route",
+            "de": "Straße",
+            "es": "Carretera"
+          }
+        },
+        {
+          "key": "town",
+          "type": "string",
+          "label": {
+            "en": "Town",
+            "fr": "Commune",
+            "de": "Ort",
+            "es": "Localidad"
+          }
+        },
+        {
+          "key": "direction",
+          "type": "string",
+          "label": {
+            "en": "Direction",
+            "fr": "Sens",
+            "de": "Richtung",
+            "es": "Sentido"
+          },
+          "description": {
+            "en": "As written by the operator, in French: “De Lyon vers Paris”.",
+            "fr": "Tel qu’écrit par l’exploitant : « De Lyon vers Paris ».",
+            "de": "Wie vom Betreiber geschrieben, auf Französisch: „De Lyon vers Paris“.",
+            "es": "Tal como lo escribe el gestor, en francés: «De Lyon vers Paris»."
+          }
+        },
+        {
+          "key": "description",
+          "type": "string",
+          "label": {
+            "en": "Description",
+            "fr": "Description",
+            "de": "Beschreibung",
+            "es": "Descripción"
+          },
+          "description": {
+            "en": "Written by the operator, in French.",
+            "fr": "Écrite par l’exploitant.",
+            "de": "Vom Betreiber geschrieben, auf Französisch.",
+            "es": "Escrita por el gestor, en francés."
+          }
+        },
+        {
+          "key": "distance_km",
+          "type": "number",
+          "label": {
+            "en": "Distance (km)",
+            "fr": "Distance (km)",
+            "de": "Entfernung (km)",
+            "es": "Distancia (km)"
+          }
+        },
+        {
+          "key": "start",
+          "type": "string",
+          "label": {
+            "en": "Start",
+            "fr": "Début",
+            "de": "Beginn",
+            "es": "Inicio"
+          },
+          "description": {
+            "en": "ISO 8601 date.",
+            "fr": "Date ISO 8601.",
+            "de": "ISO-8601-Datum.",
+            "es": "Fecha ISO 8601."
+          }
+        },
+        {
+          "key": "end",
+          "type": "string",
+          "label": {
+            "en": "End",
+            "fr": "Fin",
+            "de": "Ende",
+            "es": "Fin"
+          },
+          "description": {
+            "en": "ISO 8601 date, empty when not known.",
+            "fr": "Date ISO 8601, vide si inconnue.",
+            "de": "ISO-8601-Datum, leer wenn unbekannt.",
+            "es": "Fecha ISO 8601, vacía si se desconoce."
+          }
+        },
+        {
+          "key": "summary",
+          "type": "string",
+          "label": {
+            "en": "Summary",
+            "fr": "Résumé",
+            "de": "Zusammenfassung",
+            "es": "Resumen"
+          },
+          "description": {
+            "en": "A sentence ready for a message.",
+            "fr": "Une phrase prête pour un message.",
+            "de": "Ein Satz, bereit für eine Nachricht.",
+            "es": "Una frase lista para un mensaje."
+          }
+        }
+      ]
+    },
+    {
+      "key": "forecast_alert",
+      "label": {
+        "en": "Bison Futé: orange, red or black forecast",
+        "fr": "Bison Futé : prévision orange, rouge ou noire",
+        "de": "Bison Futé: orange, rote oder schwarze Prognose",
+        "es": "Bison Futé: previsión naranja, roja o negra"
+      },
+      "description": {
+        "en": "The traffic forecast of the department is orange or worse: for today from 6 am, for tomorrow from 6 pm the day before, again if it worsens.",
+        "fr": "La prévision de trafic du département est orange ou pire : pour aujourd’hui dès 6 h, pour demain dès 18 h la veille, à nouveau si elle s’aggrave.",
+        "de": "Die Verkehrsprognose des Departements ist orange oder schlechter: für heute ab 6 Uhr, für morgen ab 18 Uhr am Vortag, erneut bei Verschlechterung.",
+        "es": "La previsión de tráfico del departamento es naranja o peor: para hoy desde las 6 h, para mañana desde las 18 h del día anterior, de nuevo si empeora."
+      },
+      "fields": [
+        {
+          "key": "place",
+          "type": "select",
+          "source": "devices",
+          "label": {
+            "en": "Place",
+            "fr": "Lieu",
+            "de": "Ort",
+            "es": "Lugar"
+          },
+          "description": {
+            "en": "Leave empty for any.",
+            "fr": "Laissez vide pour tous.",
+            "de": "Leer lassen für alle.",
+            "es": "Déjelo vacío para todos."
+          },
+          "required": false
+        },
+        {
+          "key": "day",
+          "type": "select",
+          "label": {
+            "en": "Day",
+            "fr": "Jour",
+            "de": "Tag",
+            "es": "Día"
+          },
+          "description": {
+            "en": "Leave empty for any.",
+            "fr": "Laissez vide pour tous.",
+            "de": "Leer lassen für alle.",
+            "es": "Déjelo vacío para todos."
+          },
+          "options": [
+            {
+              "value": "today",
+              "label": {
+                "en": "Today",
+                "fr": "Aujourd’hui",
+                "de": "Heute",
+                "es": "Hoy"
+              }
+            },
+            {
+              "value": "tomorrow",
+              "label": {
+                "en": "Tomorrow",
+                "fr": "Demain",
+                "de": "Morgen",
+                "es": "Mañana"
+              }
+            }
+          ],
+          "required": false
+        },
+        {
+          "key": "direction",
+          "type": "select",
+          "label": {
+            "en": "Direction",
+            "fr": "Sens",
+            "de": "Richtung",
+            "es": "Sentido"
+          },
+          "description": {
+            "en": "Leave empty for any.",
+            "fr": "Laissez vide pour tous.",
+            "de": "Leer lassen für alle.",
+            "es": "Déjelo vacío para todos."
+          },
+          "options": [
+            {
+              "value": "departure",
+              "label": {
+                "en": "Departures",
+                "fr": "Départs",
+                "de": "Hinfahrt",
+                "es": "Salidas"
+              }
+            },
+            {
+              "value": "return",
+              "label": {
+                "en": "Returns",
+                "fr": "Retours",
+                "de": "Rückfahrt",
+                "es": "Regresos"
+              }
+            }
+          ],
+          "required": false
+        },
+        {
+          "key": "level",
+          "type": "multi_select",
+          "label": {
+            "en": "Levels",
+            "fr": "Niveaux",
+            "de": "Stufen",
+            "es": "Niveles"
+          },
+          "description": {
+            "en": "Leave empty for any.",
+            "fr": "Laissez vide pour tous.",
+            "de": "Leer lassen für alle.",
+            "es": "Déjelo vacío para todos."
+          },
+          "options": [
+            {
+              "value": "orange",
+              "label": {
+                "en": "Orange",
+                "fr": "Orange",
+                "de": "Orange",
+                "es": "Naranja"
+              }
+            },
+            {
+              "value": "red",
+              "label": {
+                "en": "Red",
+                "fr": "Rouge",
+                "de": "Rot",
+                "es": "Rojo"
+              }
+            },
+            {
+              "value": "black",
+              "label": {
+                "en": "Black",
+                "fr": "Noir",
+                "de": "Schwarz",
+                "es": "Negro"
+              }
+            }
+          ],
+          "required": false
+        }
+      ],
+      "variables": [
+        {
+          "key": "place_name",
+          "type": "string",
+          "label": {
+            "en": "Place",
+            "fr": "Lieu",
+            "de": "Ort",
+            "es": "Lugar"
+          }
+        },
+        {
+          "key": "department",
+          "type": "string",
+          "label": {
+            "en": "Department",
+            "fr": "Département",
+            "de": "Departement",
+            "es": "Departamento"
+          }
+        },
+        {
+          "key": "day",
+          "type": "string",
+          "label": {
+            "en": "Day",
+            "fr": "Jour",
+            "de": "Tag",
+            "es": "Día"
+          },
+          "description": {
+            "en": "today or tomorrow.",
+            "fr": "today ou tomorrow.",
+            "de": "today oder tomorrow.",
+            "es": "today o tomorrow."
+          }
+        },
+        {
+          "key": "date",
+          "type": "string",
+          "label": {
+            "en": "Date",
+            "fr": "Date",
+            "de": "Datum",
+            "es": "Fecha"
+          },
+          "description": {
+            "en": "YYYY-MM-DD.",
+            "fr": "AAAA-MM-JJ.",
+            "de": "JJJJ-MM-TT.",
+            "es": "AAAA-MM-DD."
+          }
+        },
+        {
+          "key": "direction",
+          "type": "string",
+          "label": {
+            "en": "Direction",
+            "fr": "Sens",
+            "de": "Richtung",
+            "es": "Sentido"
+          },
+          "description": {
+            "en": "departure or return.",
+            "fr": "departure ou return.",
+            "de": "departure oder return.",
+            "es": "departure o return."
+          }
+        },
+        {
+          "key": "level",
+          "type": "string",
+          "label": {
+            "en": "Level (key)",
+            "fr": "Niveau (clé)",
+            "de": "Stufe (Schlüssel)",
+            "es": "Nivel (clave)"
+          },
+          "description": {
+            "en": "orange, red or black.",
+            "fr": "orange, red ou black.",
+            "de": "orange, red oder black.",
+            "es": "orange, red o black."
+          }
+        },
+        {
+          "key": "level_label",
+          "type": "string",
+          "label": {
+            "en": "Level",
+            "fr": "Niveau",
+            "de": "Stufe",
+            "es": "Nivel"
+          }
+        },
+        {
+          "key": "national_level_label",
+          "type": "string",
+          "label": {
+            "en": "Level in France",
+            "fr": "Niveau en France",
+            "de": "Stufe in Frankreich",
+            "es": "Nivel en Francia"
+          }
+        },
+        {
+          "key": "summary",
+          "type": "string",
+          "label": {
+            "en": "Summary",
+            "fr": "Résumé",
+            "de": "Zusammenfassung",
+            "es": "Resumen"
+          },
+          "description": {
+            "en": "A sentence ready for a message.",
+            "fr": "Une phrase prête pour un message.",
+            "de": "Ein Satz, bereit für eine Nachricht.",
+            "es": "Una frase lista para un mensaje."
+          }
+        }
+      ]
+    }
+  ],
+  "scene_actions": [
+    {
+      "key": "get_road_events",
+      "timeout_seconds": 10,
+      "label": {
+        "en": "Bison Futé: read the road events",
+        "fr": "Bison Futé : lire les évènements routiers",
+        "de": "Bison Futé: Verkehrsmeldungen lesen",
+        "es": "Bison Futé: leer las incidencias viales"
+      },
+      "description": {
+        "en": "The active road events around a place, counted and listed, for the next actions (a message, a condition).",
+        "fr": "Les évènements en cours autour d’un lieu, comptés et listés, pour les actions suivantes (un message, une condition).",
+        "de": "Die aktiven Meldungen rund um einen Ort, gezählt und aufgelistet, für die nächsten Aktionen (eine Nachricht, eine Bedingung).",
+        "es": "Las incidencias activas alrededor de un lugar, contadas y listadas, para las acciones siguientes (un mensaje, una condición)."
+      },
+      "fields": [
+        {
+          "key": "place",
+          "type": "select",
+          "source": "devices",
+          "label": {
+            "en": "Place",
+            "fr": "Lieu",
+            "de": "Ort",
+            "es": "Lugar"
+          },
+          "description": {
+            "en": "Empty: the first place.",
+            "fr": "Vide : le premier lieu.",
+            "de": "Leer: der erste Ort.",
+            "es": "Vacío: el primer lugar."
+          },
+          "required": false
+        },
+        {
+          "key": "categories",
+          "type": "multi_select",
+          "label": {
+            "en": "Types",
+            "fr": "Types",
+            "de": "Arten",
+            "es": "Tipos"
+          },
+          "description": {
+            "en": "Empty: every type.",
+            "fr": "Vide : tous les types.",
+            "de": "Leer: alle Arten.",
+            "es": "Vacío: todos los tipos."
+          },
+          "options": [
+            {
+              "value": "closure",
+              "label": {
+                "en": "Road closed",
+                "fr": "Fermeture",
+                "de": "Sperrung",
+                "es": "Corte de carretera"
+              }
+            },
+            {
+              "value": "accident",
+              "label": {
+                "en": "Accident",
+                "fr": "Accident",
+                "de": "Unfall",
+                "es": "Accidente"
+              }
+            },
+            {
+              "value": "obstruction",
+              "label": {
+                "en": "Obstacle (broken-down vehicle, object, animal…)",
+                "fr": "Obstacle (véhicule en panne, objet, animal…)",
+                "de": "Hindernis (Pannenfahrzeug, Gegenstand, Tier…)",
+                "es": "Obstáculo (vehículo averiado, objeto, animal…)"
+              }
+            },
+            {
+              "value": "congestion",
+              "label": {
+                "en": "Traffic jam",
+                "fr": "Bouchon",
+                "de": "Stau",
+                "es": "Atasco"
+              }
+            },
+            {
+              "value": "conditions",
+              "label": {
+                "en": "Road conditions (snow, ice, fog…)",
+                "fr": "Conditions de circulation (neige, verglas, brouillard…)",
+                "de": "Straßenzustand (Schnee, Glätte, Nebel…)",
+                "es": "Estado de la vía (nieve, hielo, niebla…)"
+              }
+            },
+            {
+              "value": "roadworks",
+              "label": {
+                "en": "Roadworks",
+                "fr": "Chantier",
+                "de": "Baustelle",
+                "es": "Obras"
+              }
+            },
+            {
+              "value": "restriction",
+              "label": {
+                "en": "Restriction (lane closed, speed limit, diversion…)",
+                "fr": "Restriction (voie fermée, limitation de vitesse, déviation…)",
+                "de": "Einschränkung (Fahrstreifen gesperrt, Tempolimit, Umleitung…)",
+                "es": "Restricción (carril cerrado, límite de velocidad, desvío…)"
+              }
+            },
+            {
+              "value": "other",
+              "label": {
+                "en": "Other information",
+                "fr": "Autre information",
+                "de": "Sonstige Information",
+                "es": "Otra información"
+              }
+            }
+          ],
+          "required": false
+        }
+      ],
+      "outputs": [
+        {
+          "key": "count",
+          "type": "number",
+          "label": {
+            "en": "Events",
+            "fr": "Évènements",
+            "de": "Meldungen",
+            "es": "Incidencias"
+          }
+        },
+        {
+          "key": "closures",
+          "type": "number",
+          "label": {
+            "en": "Closures",
+            "fr": "Fermetures",
+            "de": "Sperrungen",
+            "es": "Cortes"
+          }
+        },
+        {
+          "key": "accidents",
+          "type": "number",
+          "label": {
+            "en": "Accidents and obstacles",
+            "fr": "Accidents et obstacles",
+            "de": "Unfälle und Hindernisse",
+            "es": "Accidentes y obstáculos"
+          }
+        },
+        {
+          "key": "congestion",
+          "type": "number",
+          "label": {
+            "en": "Traffic jams",
+            "fr": "Bouchons",
+            "de": "Staus",
+            "es": "Atascos"
+          }
+        },
+        {
+          "key": "roadworks",
+          "type": "number",
+          "label": {
+            "en": "Roadworks",
+            "fr": "Chantiers",
+            "de": "Baustellen",
+            "es": "Obras"
+          }
+        },
+        {
+          "key": "planned",
+          "type": "number",
+          "label": {
+            "en": "Planned within 7 days",
+            "fr": "Prévus sous 7 jours",
+            "de": "Geplant in 7 Tagen",
+            "es": "Previstas en 7 días"
+          }
+        },
+        {
+          "key": "nearest",
+          "type": "string",
+          "label": {
+            "en": "Closest event",
+            "fr": "Évènement le plus proche",
+            "de": "Nächste Meldung",
+            "es": "Incidencia más cercana"
+          }
+        },
+        {
+          "key": "summary",
+          "type": "string",
+          "label": {
+            "en": "List",
+            "fr": "Liste",
+            "de": "Liste",
+            "es": "Lista"
+          },
+          "description": {
+            "en": "One line per event, ready for a message.",
+            "fr": "Une ligne par évènement, prête pour un message.",
+            "de": "Eine Zeile pro Meldung, bereit für eine Nachricht.",
+            "es": "Una línea por incidencia, lista para un mensaje."
+          }
+        }
+      ]
+    },
+    {
+      "key": "get_forecast",
+      "timeout_seconds": 10,
+      "label": {
+        "en": "Bison Futé: read the forecast",
+        "fr": "Bison Futé : lire la prévision",
+        "de": "Bison Futé: Prognose lesen",
+        "es": "Bison Futé: leer la previsión"
+      },
+      "description": {
+        "en": "The Bison Futé forecast of the department of a place, today or tomorrow, and the next orange or worse day.",
+        "fr": "La prévision Bison Futé du département d’un lieu, aujourd’hui ou demain, et le prochain jour orange ou pire.",
+        "de": "Die Bison-Futé-Prognose des Departements eines Ortes, heute oder morgen, und der nächste orange oder schlechtere Tag.",
+        "es": "La previsión de Bison Futé del departamento de un lugar, hoy o mañana, y el próximo día naranja o peor."
+      },
+      "fields": [
+        {
+          "key": "place",
+          "type": "select",
+          "source": "devices",
+          "label": {
+            "en": "Place",
+            "fr": "Lieu",
+            "de": "Ort",
+            "es": "Lugar"
+          },
+          "description": {
+            "en": "Empty: the first place.",
+            "fr": "Vide : le premier lieu.",
+            "de": "Leer: der erste Ort.",
+            "es": "Vacío: el primer lugar."
+          },
+          "required": false
+        },
+        {
+          "key": "day",
+          "type": "select",
+          "label": {
+            "en": "Day",
+            "fr": "Jour",
+            "de": "Tag",
+            "es": "Día"
+          },
+          "options": [
+            {
+              "value": "today",
+              "label": {
+                "en": "Today",
+                "fr": "Aujourd’hui",
+                "de": "Heute",
+                "es": "Hoy"
+              }
+            },
+            {
+              "value": "tomorrow",
+              "label": {
+                "en": "Tomorrow",
+                "fr": "Demain",
+                "de": "Morgen",
+                "es": "Mañana"
+              }
+            }
+          ],
+          "default": "today",
+          "required": false
+        }
+      ],
+      "outputs": [
+        {
+          "key": "date",
+          "type": "string",
+          "label": {
+            "en": "Date",
+            "fr": "Date",
+            "de": "Datum",
+            "es": "Fecha"
+          }
+        },
+        {
+          "key": "department",
+          "type": "string",
+          "label": {
+            "en": "Department",
+            "fr": "Département",
+            "de": "Departement",
+            "es": "Departamento"
+          }
+        },
+        {
+          "key": "departure_level",
+          "type": "number",
+          "label": {
+            "en": "Departures (0 to 3)",
+            "fr": "Départs (0 à 3)",
+            "de": "Hinfahrt (0 bis 3)",
+            "es": "Salidas (0 a 3)"
+          },
+          "description": {
+            "en": "0 green, 1 orange, 2 red, 3 black.",
+            "fr": "0 vert, 1 orange, 2 rouge, 3 noir.",
+            "de": "0 grün, 1 orange, 2 rot, 3 schwarz.",
+            "es": "0 verde, 1 naranja, 2 rojo, 3 negro."
+          }
+        },
+        {
+          "key": "departure_label",
+          "type": "string",
+          "label": {
+            "en": "Departures",
+            "fr": "Départs",
+            "de": "Hinfahrt",
+            "es": "Salidas"
+          }
+        },
+        {
+          "key": "return_level",
+          "type": "number",
+          "label": {
+            "en": "Returns (0 to 3)",
+            "fr": "Retours (0 à 3)",
+            "de": "Rückfahrt (0 bis 3)",
+            "es": "Regresos (0 a 3)"
+          },
+          "description": {
+            "en": "0 green, 1 orange, 2 red, 3 black.",
+            "fr": "0 vert, 1 orange, 2 rouge, 3 noir.",
+            "de": "0 grün, 1 orange, 2 rot, 3 schwarz.",
+            "es": "0 verde, 1 naranja, 2 rojo, 3 negro."
+          }
+        },
+        {
+          "key": "return_label",
+          "type": "string",
+          "label": {
+            "en": "Returns",
+            "fr": "Retours",
+            "de": "Rückfahrt",
+            "es": "Regresos"
+          }
+        },
+        {
+          "key": "national_departure_label",
+          "type": "string",
+          "label": {
+            "en": "Departures in France",
+            "fr": "Départs en France",
+            "de": "Hinfahrt in Frankreich",
+            "es": "Salidas en Francia"
+          }
+        },
+        {
+          "key": "national_return_label",
+          "type": "string",
+          "label": {
+            "en": "Returns in France",
+            "fr": "Retours en France",
+            "de": "Rückfahrt in Frankreich",
+            "es": "Regresos en Francia"
+          }
+        },
+        {
+          "key": "next_coloured_date",
+          "type": "string",
+          "label": {
+            "en": "Next orange or worse day",
+            "fr": "Prochain jour orange ou pire",
+            "de": "Nächster oranger oder schlechterer Tag",
+            "es": "Próximo día naranja o peor"
+          },
+          "description": {
+            "en": "YYYY-MM-DD, within 60 days; empty if none.",
+            "fr": "AAAA-MM-JJ, sous 60 jours ; vide sinon.",
+            "de": "JJJJ-MM-TT, innerhalb von 60 Tagen; sonst leer.",
+            "es": "AAAA-MM-DD, en 60 días; vacío si no hay."
+          }
+        },
+        {
+          "key": "summary",
+          "type": "string",
+          "label": {
+            "en": "Summary",
+            "fr": "Résumé",
+            "de": "Zusammenfassung",
+            "es": "Resumen"
+          },
+          "description": {
+            "en": "A sentence ready for a message.",
+            "fr": "Une phrase prête pour un message.",
+            "de": "Ein Satz, bereit für eine Nachricht.",
+            "es": "Una frase lista para un mensaje."
+          }
+        }
+      ]
+    }
+  ]
+}

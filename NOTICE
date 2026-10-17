@@ -1,0 +1,16 @@
+Gladys Bison Futé integration
+Copyright 2026 William Deren
+
+This product is licensed under the Apache License, Version 2.0 (see LICENSE).
+
+The road events come from the open data of the French national road network
+(réseau routier national non concédé), produced by the interdepartmental road
+directorates (DIR) and published by Bison Futé on tipi.bison-fute.gouv.fr and
+transport.data.gouv.fr under the Licence Ouverte / Open Licence 2.0 (Etalab).
+The traffic forecasts are read from the calendar published on
+www.bison-fute.gouv.fr. Each event shows the DIR it comes from and the update
+time of the feed. Communes are found with geo.api.gouv.fr, an open API of the
+French government.
+
+This community integration is not affiliated with, endorsed or sponsored by
+Bison Futé, the French Ministry in charge of transport or the DIR.

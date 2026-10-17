@@ -1,0 +1,618 @@
+{
+  "devices": {
+    "place": {
+      "external_id": "ext:test-integration:place:94028",
+      "should_poll": false,
+      "params": ["INSEE", "DEPARTMENT", "RADIUS_KM"],
+      "features": [
+        {
+          "external_id": "ext:test-integration:place:94028:events",
+          "category": "counter-sensor",
+          "type": "integer",
+          "min": 0,
+          "max": 999,
+          "read_only": true,
+          "has_feedback": false
+        },
+        {
+          "external_id": "ext:test-integration:place:94028:closures",
+          "category": "counter-sensor",
+          "type": "integer",
+          "min": 0,
+          "max": 999,
+          "read_only": true,
+          "has_feedback": false
+        },
+        {
+          "external_id": "ext:test-integration:place:94028:accidents",
+          "category": "counter-sensor",
+          "type": "integer",
+          "min": 0,
+          "max": 999,
+          "read_only": true,
+          "has_feedback": false
+        },
+        {
+          "external_id": "ext:test-integration:place:94028:congestion",
+          "category": "counter-sensor",
+          "type": "integer",
+          "min": 0,
+          "max": 999,
+          "read_only": true,
+          "has_feedback": false
+        },
+        {
+          "external_id": "ext:test-integration:place:94028:roadworks",
+          "category": "counter-sensor",
+          "type": "integer",
+          "min": 0,
+          "max": 999,
+          "read_only": true,
+          "has_feedback": false
+        },
+        {
+          "external_id": "ext:test-integration:place:94028:nearest",
+          "category": "text",
+          "type": "text",
+          "min": 0,
+          "max": 0,
+          "read_only": true,
+          "has_feedback": false
+        },
+        {
+          "external_id": "ext:test-integration:place:94028:departure_today",
+          "category": "risk",
+          "type": "integer",
+          "min": 0,
+          "max": 3,
+          "read_only": true,
+          "has_feedback": false
+        },
+        {
+          "external_id": "ext:test-integration:place:94028:return_today",
+          "category": "risk",
+          "type": "integer",
+          "min": 0,
+          "max": 3,
+          "read_only": true,
+          "has_feedback": false
+        },
+        {
+          "external_id": "ext:test-integration:place:94028:departure_tomorrow",
+          "category": "risk",
+          "type": "integer",
+          "min": 0,
+          "max": 3,
+          "read_only": true,
+          "has_feedback": false
+        },
+        {
+          "external_id": "ext:test-integration:place:94028:return_tomorrow",
+          "category": "risk",
+          "type": "integer",
+          "min": 0,
+          "max": 3,
+          "read_only": true,
+          "has_feedback": false
+        }
+      ]
+    },
+    "placeWithoutForecast": {
+      "external_id": "ext:test-integration:place:2a004",
+      "should_poll": false,
+      "params": ["INSEE", "DEPARTMENT", "RADIUS_KM", "ROADS"],
+      "features": [
+        {
+          "external_id": "ext:test-integration:place:2a004:events",
+          "category": "counter-sensor",
+          "type": "integer",
+          "min": 0,
+          "max": 999,
+          "read_only": true,
+          "has_feedback": false
+        },
+        {
+          "external_id": "ext:test-integration:place:2a004:closures",
+          "category": "counter-sensor",
+          "type": "integer",
+          "min": 0,
+          "max": 999,
+          "read_only": true,
+          "has_feedback": false
+        },
+        {
+          "external_id": "ext:test-integration:place:2a004:accidents",
+          "category": "counter-sensor",
+          "type": "integer",
+          "min": 0,
+          "max": 999,
+          "read_only": true,
+          "has_feedback": false
+        },
+        {
+          "external_id": "ext:test-integration:place:2a004:congestion",
+          "category": "counter-sensor",
+          "type": "integer",
+          "min": 0,
+          "max": 999,
+          "read_only": true,
+          "has_feedback": false
+        },
+        {
+          "external_id": "ext:test-integration:place:2a004:roadworks",
+          "category": "counter-sensor",
+          "type": "integer",
+          "min": 0,
+          "max": 999,
+          "read_only": true,
+          "has_feedback": false
+        },
+        {
+          "external_id": "ext:test-integration:place:2a004:nearest",
+          "category": "text",
+          "type": "text",
+          "min": 0,
+          "max": 0,
+          "read_only": true,
+          "has_feedback": false
+        }
+      ]
+    }
+  },
+  "manifest": {
+    "actions": ["refresh", "diagnostic"],
+    "config_schema": [
+      {
+        "key": "intro",
+        "type": "section"
+      },
+      {
+        "key": "places",
+        "type": "section"
+      },
+      {
+        "key": "house_1",
+        "type": "select"
+      },
+      {
+        "key": "commune_1",
+        "type": "string"
+      },
+      {
+        "key": "radius_1",
+        "type": "number"
+      },
+      {
+        "key": "roads_1",
+        "type": "string"
+      },
+      {
+        "key": "place_2_section",
+        "type": "section"
+      },
+      {
+        "key": "house_2",
+        "type": "select"
+      },
+      {
+        "key": "commune_2",
+        "type": "string"
+      },
+      {
+        "key": "radius_2",
+        "type": "number"
+      },
+      {
+        "key": "roads_2",
+        "type": "string"
+      },
+      {
+        "key": "place_3_section",
+        "type": "section"
+      },
+      {
+        "key": "house_3",
+        "type": "select"
+      },
+      {
+        "key": "commune_3",
+        "type": "string"
+      },
+      {
+        "key": "radius_3",
+        "type": "number"
+      },
+      {
+        "key": "roads_3",
+        "type": "string"
+      },
+      {
+        "key": "options",
+        "type": "section"
+      },
+      {
+        "key": "interval",
+        "type": "select"
+      },
+      {
+        "key": "language",
+        "type": "select"
+      }
+    ],
+    "scene_triggers": [
+      {
+        "key": "event_started",
+        "fields": [
+          {
+            "key": "place",
+            "options": []
+          },
+          {
+            "key": "category",
+            "options": [
+              "closure",
+              "accident",
+              "obstruction",
+              "congestion",
+              "conditions",
+              "roadworks",
+              "restriction",
+              "other"
+            ]
+          },
+          {
+            "key": "road",
+            "options": []
+          }
+        ],
+        "variables": [
+          {
+            "key": "place_name",
+            "type": "string"
+          },
+          {
+            "key": "event_id",
+            "type": "string"
+          },
+          {
+            "key": "category",
+            "type": "string"
+          },
+          {
+            "key": "category_label",
+            "type": "string"
+          },
+          {
+            "key": "road",
+            "type": "string"
+          },
+          {
+            "key": "town",
+            "type": "string"
+          },
+          {
+            "key": "direction",
+            "type": "string"
+          },
+          {
+            "key": "description",
+            "type": "string"
+          },
+          {
+            "key": "distance_km",
+            "type": "number"
+          },
+          {
+            "key": "severity",
+            "type": "string"
+          },
+          {
+            "key": "start",
+            "type": "string"
+          },
+          {
+            "key": "end",
+            "type": "string"
+          },
+          {
+            "key": "summary",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "key": "event_ended",
+        "fields": [
+          {
+            "key": "place",
+            "options": []
+          },
+          {
+            "key": "category",
+            "options": [
+              "closure",
+              "accident",
+              "obstruction",
+              "congestion",
+              "conditions",
+              "roadworks",
+              "restriction",
+              "other"
+            ]
+          },
+          {
+            "key": "road",
+            "options": []
+          }
+        ],
+        "variables": [
+          {
+            "key": "place_name",
+            "type": "string"
+          },
+          {
+            "key": "event_id",
+            "type": "string"
+          },
+          {
+            "key": "category",
+            "type": "string"
+          },
+          {
+            "key": "category_label",
+            "type": "string"
+          },
+          {
+            "key": "road",
+            "type": "string"
+          },
+          {
+            "key": "town",
+            "type": "string"
+          },
+          {
+            "key": "duration_minutes",
+            "type": "number"
+          },
+          {
+            "key": "summary",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "key": "event_planned",
+        "fields": [
+          {
+            "key": "place",
+            "options": []
+          },
+          {
+            "key": "category",
+            "options": [
+              "closure",
+              "accident",
+              "obstruction",
+              "congestion",
+              "conditions",
+              "roadworks",
+              "restriction",
+              "other"
+            ]
+          },
+          {
+            "key": "road",
+            "options": []
+          }
+        ],
+        "variables": [
+          {
+            "key": "place_name",
+            "type": "string"
+          },
+          {
+            "key": "event_id",
+            "type": "string"
+          },
+          {
+            "key": "category",
+            "type": "string"
+          },
+          {
+            "key": "category_label",
+            "type": "string"
+          },
+          {
+            "key": "road",
+            "type": "string"
+          },
+          {
+            "key": "town",
+            "type": "string"
+          },
+          {
+            "key": "direction",
+            "type": "string"
+          },
+          {
+            "key": "description",
+            "type": "string"
+          },
+          {
+            "key": "distance_km",
+            "type": "number"
+          },
+          {
+            "key": "start",
+            "type": "string"
+          },
+          {
+            "key": "end",
+            "type": "string"
+          },
+          {
+            "key": "summary",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "key": "forecast_alert",
+        "fields": [
+          {
+            "key": "place",
+            "options": []
+          },
+          {
+            "key": "day",
+            "options": ["today", "tomorrow"]
+          },
+          {
+            "key": "direction",
+            "options": ["departure", "return"]
+          },
+          {
+            "key": "level",
+            "options": ["orange", "red", "black"]
+          }
+        ],
+        "variables": [
+          {
+            "key": "place_name",
+            "type": "string"
+          },
+          {
+            "key": "department",
+            "type": "string"
+          },
+          {
+            "key": "day",
+            "type": "string"
+          },
+          {
+            "key": "date",
+            "type": "string"
+          },
+          {
+            "key": "direction",
+            "type": "string"
+          },
+          {
+            "key": "level",
+            "type": "string"
+          },
+          {
+            "key": "level_label",
+            "type": "string"
+          },
+          {
+            "key": "national_level_label",
+            "type": "string"
+          },
+          {
+            "key": "summary",
+            "type": "string"
+          }
+        ]
+      }
+    ],
+    "scene_actions": [
+      {
+        "key": "get_road_events",
+        "fields": ["place", "categories"],
+        "outputs": [
+          {
+            "key": "count",
+            "type": "number"
+          },
+          {
+            "key": "closures",
+            "type": "number"
+          },
+          {
+            "key": "accidents",
+            "type": "number"
+          },
+          {
+            "key": "congestion",
+            "type": "number"
+          },
+          {
+            "key": "roadworks",
+            "type": "number"
+          },
+          {
+            "key": "planned",
+            "type": "number"
+          },
+          {
+            "key": "nearest",
+            "type": "string"
+          },
+          {
+            "key": "summary",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "key": "get_forecast",
+        "fields": ["place", "day"],
+        "outputs": [
+          {
+            "key": "date",
+            "type": "string"
+          },
+          {
+            "key": "department",
+            "type": "string"
+          },
+          {
+            "key": "departure_level",
+            "type": "number"
+          },
+          {
+            "key": "departure_label",
+            "type": "string"
+          },
+          {
+            "key": "return_level",
+            "type": "number"
+          },
+          {
+            "key": "return_label",
+            "type": "string"
+          },
+          {
+            "key": "national_departure_label",
+            "type": "string"
+          },
+          {
+            "key": "national_return_label",
+            "type": "string"
+          },
+          {
+            "key": "next_coloured_date",
+            "type": "string"
+          },
+          {
+            "key": "summary",
+            "type": "string"
+          }
+        ]
+      }
+    ],
+    "widgets": [
+      {
+        "key": "traffic",
+        "settings": ["place"],
+        "options": {}
+      },
+      {
+        "key": "forecast",
+        "settings": ["place"],
+        "options": {}
+      }
+    ]
+  }
+}
