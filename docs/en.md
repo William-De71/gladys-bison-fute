@@ -12,7 +12,7 @@ It is a **cloud** integration, without account nor key: it contacts `tipi.bison-
 
 ## Prerequisites
 
-- Gladys Assistant 5.2.0 or later.
+- Gladys Assistant 5.3.0 or later.
 - The location of your house in Gladys (Settings > Houses), or the name of the commune to follow.
 - Nothing else: no account, no key.
 

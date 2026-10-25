@@ -12,7 +12,7 @@ C’est une intégration **cloud**, sans compte ni clé : elle contacte `tipi.bi
 
 ## Prérequis
 
-- Gladys Assistant 5.2.0 ou plus récent.
+- Gladys Assistant 5.3.0 ou plus récent.
 - La position de votre maison dans Gladys (Paramètres > Maisons), ou le nom de la commune à suivre.
 - Rien d’autre : ni compte, ni clé.
 

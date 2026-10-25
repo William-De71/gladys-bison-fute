@@ -12,7 +12,7 @@ Es una integración **en la nube**, sin cuenta ni clave: contacta con `tipi.biso
 
 ## Requisitos
 
-- Gladys Assistant 5.2.0 o posterior.
+- Gladys Assistant 5.3.0 o posterior.
 - La ubicación de su casa en Gladys (Ajustes > Casas), o el nombre del municipio que seguir.
 - Nada más: ni cuenta ni clave.
 

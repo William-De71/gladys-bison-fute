@@ -12,7 +12,7 @@ Es ist eine **Cloud**-Integration ohne Konto und ohne Schlüssel: Sie kontaktier
 
 ## Voraussetzungen
 
-- Gladys Assistant 5.2.0 oder neuer.
+- Gladys Assistant 5.3.0 oder neuer.
 - Der Standort Ihres Hauses in Gladys (Einstellungen > Häuser) oder der Name der zu verfolgenden Gemeinde.
 - Sonst nichts: kein Konto, kein Schlüssel.
 
