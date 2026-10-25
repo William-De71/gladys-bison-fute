@@ -5,6 +5,12 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and versions
 follow [Semantic Versioning](https://semver.org/). This file is generated at
 each release from the Conventional Commits: do not edit it by hand.
 
+## [0.3.0] - 2026-10-25
+
+### Added
+
+- require Gladys 5.3 and declare catalog keywords and countries ([449060c](https://github.com/William-De71/gladys-bison-fute/commit/449060ce01ccbcc99a56041ec1ce73c42aff83ff))
+
 ## [0.2.0] - 2026-10-25
 
 ### Added
@@ -30,6 +36,7 @@ each release from the Conventional Commits: do not edit it by hand.
 - Cloud transport: the open DATEX II feed of the road agencies (DIR) is read every 2 to 30 minutes with conditional requests, the forecasts every six hours; no account and no key.
 - English, French, German and Spanish everywhere: settings, devices, widgets, scenes and documentation.
 
+[0.3.0]: https://github.com/William-De71/gladys-bison-fute/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/William-De71/gladys-bison-fute/compare/v0.1.1...v0.2.0
 [0.1.1]: https://github.com/William-De71/gladys-bison-fute/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/William-De71/gladys-bison-fute/releases/tag/v0.1.0
