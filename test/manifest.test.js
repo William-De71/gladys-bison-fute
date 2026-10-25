@@ -42,7 +42,7 @@ test('declares the cloud transport only: the Bison Futé files and geo.api.gouv.
 
 test('requires the first Gladys accepting a houses select; location, nothing else', () => {
   assert.equal(manifest.gladys_version, '>=5.2.0');
-  assert.deepEqual(manifest.categories, ['services']);
+  assert.deepEqual(manifest.categories, ['transport']);
   assert.equal(manifest.location, true);
   assert.match(source('../src/app.js'), /getHouses\(\)/);
   for (const key of ['network_wake', 'containers', 'network_discovery', 'webhooks']) {
