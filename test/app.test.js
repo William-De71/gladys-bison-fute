@@ -3,6 +3,7 @@
 // devices, the states and the scene events like the host API does, and fake
 // Bison Futé and geo.api.gouv.fr services serving real (reduced) files.
 
+import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createFakeGladys } from '@gladysassistant/integration-sdk/testing';
@@ -21,6 +22,8 @@ import {
   HOUSES,
   SNAPSHOT,
 } from './helpers/fixtures.js';
+
+const { version } = JSON.parse(readFileSync(new URL('../package.json', import.meta.url), 'utf8'));
 
 const CONFIG = {
   house_1: 'home',
@@ -88,7 +91,9 @@ test('a house and two communes become three devices, read with one request per s
   );
   assert.equal(apis.callsTo(TIPI).length, 1);
   assert.equal(apis.callsTo(SITE).length, 1);
-  assert.match(apis.callsTo(TIPI)[0].headers['user-agent'], /^gladys-bison-fute\/0\.1\.0/);
+  assert.ok(
+    apis.callsTo(TIPI)[0].headers['user-agent'].startsWith(`gladys-bison-fute/${version} `),
+  );
   assert.equal(apis.callsTo(TIPI)[0].headers['accept-encoding'], 'gzip');
   const status = gladys.fake.connectionStatus;
   assert.equal(status.connected, true);
