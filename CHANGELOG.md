@@ -5,6 +5,12 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and versions
 follow [Semantic Versioning](https://semver.org/). This file is generated at
 each release from the Conventional Commits: do not edit it by hand.
 
+## [0.2.0] - 2026-10-25
+
+### Added
+
+- list the integration under the new Transport shelf of the catalog ([961d3dc](https://github.com/William-De71/gladys-bison-fute/commit/961d3dc53d9a6b9f4e71f81ec31694ae8c4e90af))
+
 ## [0.1.1] - 2026-10-24
 
 ### Security
@@ -24,5 +30,6 @@ each release from the Conventional Commits: do not edit it by hand.
 - Cloud transport: the open DATEX II feed of the road agencies (DIR) is read every 2 to 30 minutes with conditional requests, the forecasts every six hours; no account and no key.
 - English, French, German and Spanish everywhere: settings, devices, widgets, scenes and documentation.
 
+[0.2.0]: https://github.com/William-De71/gladys-bison-fute/compare/v0.1.1...v0.2.0
 [0.1.1]: https://github.com/William-De71/gladys-bison-fute/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/William-De71/gladys-bison-fute/releases/tag/v0.1.0
