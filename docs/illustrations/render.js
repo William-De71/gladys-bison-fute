@@ -191,17 +191,18 @@ const formatDate = (value) =>
   }).format(new Date(value));
 
 // WidgetCardList: an item with a description or links is clickable; with a
-// date, the date replaces the subtitle.
+// date, the date replaces the subtitle; `grid` puts the items in columns.
 const cardList = (component) =>
   el(
     'div',
     null,
     el(
       'div',
-      'cardList',
+      component.display === 'grid' ? 'cardGrid' : 'cardList',
       component.items.map((item) => {
         const clickable = Boolean(item.description) || (item.links && item.links.length > 0);
-        const node = el('button', `cardListItem ${clickable ? 'clickable' : ''}`, [
+        const itemClass = component.display === 'grid' ? 'cardGridItem' : 'cardListItem';
+        const node = el('button', `${itemClass} ${clickable ? 'clickable' : ''}`, [
           el('div', 'cardListText', [
             el('span', 'cardTitle', text(item.title)),
             item.date || item.subtitle

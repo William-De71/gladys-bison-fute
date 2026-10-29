@@ -186,12 +186,6 @@ const TEXTS = {
   widgetClosures: { en: 'Closures', fr: 'Fermetures', de: 'Sperrungen', es: 'Cortes' },
   // Accidents and obstacles: a short word, the tile is narrow.
   widgetAccidents: { en: 'Incidents', fr: 'Incidents', de: 'Störungen', es: 'Incidentes' },
-  widgetPlannedBadge: {
-    en: 'Planned {date}',
-    fr: 'Prévu le {date}',
-    de: 'Geplant {date}',
-    es: 'Prevista {date}',
-  },
   widgetCongestion: { en: 'Traffic jams', fr: 'Bouchons', de: 'Staus', es: 'Atascos' },
   widgetRoadworks: { en: 'Roadworks', fr: 'Chantiers', de: 'Baustellen', es: 'Obras' },
   widgetNoEvent: {
@@ -225,11 +219,35 @@ const TEXTS = {
     de: 'Ab {date}',
     es: 'Desde el {date}',
   },
+  widgetSince: {
+    en: 'Since {date}',
+    fr: 'Depuis le {date}',
+    de: 'Seit {date}',
+    es: 'Desde el {date}',
+  },
   widgetUntil: {
     en: 'Until {date}',
     fr: 'Jusqu’au {date}',
     de: 'Bis {date}',
     es: 'Hasta el {date}',
+  },
+  widgetNoEnd: {
+    en: 'No end announced',
+    fr: 'Fin non annoncée',
+    de: 'Kein Ende angekündigt',
+    es: 'Sin fin anunciado',
+  },
+  widgetPlannedOn: {
+    en: 'Planned {date}',
+    fr: 'Prévu le {date}',
+    de: 'Geplant am {date}',
+    es: 'Prevista el {date}',
+  },
+  widgetSource: {
+    en: 'Source: {source}',
+    fr: 'Source : {source}',
+    de: 'Quelle: {source}',
+    es: 'Fuente: {source}',
   },
   widget_departure_today: {
     en: 'Departures today',
@@ -255,11 +273,20 @@ const TEXTS = {
     de: 'Rückfahrt morgen',
     es: 'Regresos mañana',
   },
-  widgetDayTitle: {
-    en: 'Departures {departure} · returns {return}',
-    fr: 'Départs {departure} · retours {return}',
-    de: 'Hinfahrt {departure} · Rückfahrt {return}',
-    es: 'Salidas {departure} · regresos {return}',
+  // Which directions reach the worst level of a day.
+  widgetDay_departure: { en: 'Departures', fr: 'Départs', de: 'Hinfahrt', es: 'Salidas' },
+  widgetDay_return: { en: 'Returns', fr: 'Retours', de: 'Rückfahrt', es: 'Regresos' },
+  widgetDay_both: {
+    en: 'Both directions',
+    fr: 'Départs et retours',
+    de: 'Hin- und Rückfahrt',
+    es: 'Salidas y regresos',
+  },
+  widgetDayDetail: {
+    en: '{day}\nDepartures: {departure}\nReturns: {return}',
+    fr: '{day}\nDéparts : {departure}\nRetours : {return}',
+    de: '{day}\nHinfahrt: {departure}\nRückfahrt: {return}',
+    es: '{day}\nSalidas: {departure}\nRegresos: {return}',
   },
   widgetNoColouredDay: {
     en: 'No orange, red or black day forecast in the next {days} days.',
@@ -497,6 +524,22 @@ function shortDateTime(instant, language, timeZone = process.env.TZ || undefined
 }
 
 /**
+ * @description An instant written in full, with its year ("29 oct. 2026,
+ * 14:05"): the detail of an event may start or end in another year.
+ * @param {number} instant - The instant, in ms.
+ * @param {string} language - The language.
+ * @param {string} [timeZone] - IANA timezone.
+ * @returns {string} The text.
+ */
+function longDateTime(instant, language, timeZone = process.env.TZ || undefined) {
+  return new Intl.DateTimeFormat(locale(language), {
+    dateStyle: 'medium',
+    timeStyle: 'short',
+    timeZone,
+  }).format(new Date(instant));
+}
+
+/**
  * @description A day and month ("16/10").
  * @param {number} instant - The instant, in ms.
  * @param {string} language - The language.
@@ -512,17 +555,34 @@ function shortDate(instant, language, timeZone = process.env.TZ || undefined) {
 }
 
 /**
- * @description The day of the week of a calendar date ("Friday").
+ * @description A calendar date the short way, with its day ("Sat. 17/10"):
+ * the title of a day in a grid column.
  * @param {string} date - `YYYY-MM-DD`.
  * @param {string} language - The language.
- * @returns {string} The day, capitalized.
+ * @returns {string} The text, capitalized.
  */
-function weekday(date, language) {
-  const name = new Intl.DateTimeFormat(locale(language), {
-    weekday: 'long',
+function shortDay(date, language) {
+  const at = new Date(`${date}T12:00:00Z`);
+  const day = new Intl.DateTimeFormat(locale(language), {
+    weekday: 'short',
+    timeZone: 'UTC',
+  }).format(at);
+  const text = `${day} ${shortDate(at.getTime(), language, 'UTC')}`;
+  return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
+/**
+ * @description A calendar date in full ("Saturday, October 17, 2026").
+ * @param {string} date - `YYYY-MM-DD`.
+ * @param {string} language - The language.
+ * @returns {string} The text, capitalized.
+ */
+function fullDay(date, language) {
+  const text = new Intl.DateTimeFormat(locale(language), {
+    dateStyle: 'full',
     timeZone: 'UTC',
   }).format(new Date(`${date}T12:00:00Z`));
-  return name.charAt(0).toUpperCase() + name.slice(1);
+  return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
 export {
@@ -535,6 +595,8 @@ export {
   levelLabel,
   formatDistance,
   shortDateTime,
+  longDateTime,
   shortDate,
-  weekday,
+  shortDay,
+  fullDay,
 };

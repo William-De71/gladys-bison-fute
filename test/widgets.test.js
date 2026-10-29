@@ -101,10 +101,15 @@ test('traffic widget: counts, active then planned events, update time, in every 
       'card-list',
       'status',
     ]);
+    assert.equal(content.components[6].display, 'grid');
     const cards = content.components[6].items;
-    assert.equal(cards.length, 8);
+    assert.equal(cards.length, Math.min(9, zone.active.length + zone.planned.length));
     assert.equal(cards[0].badge.color, 'danger');
     assert.equal(cards.at(-1).badge.color, 'neutral', 'planned events come last');
+    assert.ok(
+      cards.every((card) => card.description),
+      'every card opens its detail',
+    );
   }
   const fr = buildTrafficWidget({
     place: CRETEIL,
@@ -114,8 +119,16 @@ test('traffic widget: counts, active then planned events, update time, in every 
     timeZone: TZ,
   });
   assert.equal(fr.components[0].text, 'Créteil · 25 km');
-  assert.equal(fr.components[6].items[1].title, 'N406 · Accident');
-  assert.equal(fr.components[6].items[1].subtitle, 'Bonneuil-sur-Marne · 4,1 km');
+  const accident = fr.components[6].items[1];
+  assert.equal(accident.title, 'N406');
+  assert.equal(accident.subtitle, 'Bonneuil-sur-Marne · 4,1 km');
+  assert.deepEqual(accident.badge, { text: 'Accident', color: 'danger' });
+  assert.match(accident.description, /^Depuis le \d+ \S+ 2026/m);
+  assert.match(accident.description, /^(Jusqu’au .+|Fin non annoncée)$/m);
+  assert.match(accident.description, /\n\nSource : DIR /);
+  const planned = fr.components[6].items.at(-1);
+  assert.match(planned.subtitle, /^Prévu le \d\d\/\d\d$/);
+  assert.match(planned.description, /^À partir du /m);
 });
 
 test('traffic widget: an empty zone, a traffic jam with its queue, a list of roads', () => {
@@ -180,11 +193,15 @@ test('forecast widget: today and tomorrow, the next coloured days, France', () =
     timeZone: TZ,
   });
   assert.equal(fr.components[0].text, 'Val-de-Marne (94)');
-  assert.deepEqual(fr.components[5].items[1], {
-    title: 'Départs orange · retours orange',
-    date: '2026-10-23T00:00:00.000Z',
-    badge: { text: 'Vendredi', color: 'warning' },
+  assert.equal(fr.components[5].display, 'grid');
+  assert.deepEqual(fr.components[5].items[0], {
+    title: 'Sam. 17/10',
+    subtitle: 'Départs',
+    badge: { text: 'Orange', color: 'warning' },
+    description: 'Samedi 17 octobre 2026\nDéparts : orange\nRetours : vert',
   });
+  assert.equal(fr.components[5].items[1].subtitle, 'Départs et retours');
+  assert.equal(fr.components[5].items[3].subtitle, 'Retours');
   const quiet = buildForecastWidget({
     place: CRETEIL,
     dates: {},

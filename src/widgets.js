@@ -3,12 +3,12 @@
 //
 //   - `traffic`   the road events around a place: the counts as tiles, the
 //                 active events (most serious first, then the closest) and
-//                 the ones planned in the next days as cards, the update time
-//                 as a status list;
+//                 the ones planned in the next days as a grid of cards, the
+//                 update time as a status list;
 //   - `forecast`  the Bison Futé forecast of the department of a place:
 //                 departures and returns today and tomorrow as tiles, the
-//                 next orange, red or black days as cards, France as a whole
-//                 in the status list.
+//                 next orange, red or black days as a grid of cards, France
+//                 as a whole in the status list.
 //
 // The contents come from the last reading kept by the integration: a widget
 // never costs a request. Colors are semantic (green success, orange warning,
@@ -24,16 +24,18 @@ import {
   levelLabel,
   formatDistance,
   shortDateTime,
+  longDateTime,
   shortDate,
-  weekday,
+  shortDay,
+  fullDay,
 } from './i18n.js';
 import { colouredDays, worst } from './forecast.js';
 import { countByCategory } from './zone.js';
-import { displayInstant } from './time.js';
 
 const WIDGETS = { TRAFFIC: 'traffic', FORECAST: 'forecast' };
 const TTL = { traffic: 300, forecast: 3600, message: 300 };
-const MAX_CARDS = 8;
+// Event cards: a grid of three columns on a usual card (12 allowed).
+const MAX_CARDS = 9;
 // Planned events shown after the active ones, at most.
 const MAX_PLANNED_CARDS = 3;
 // Days of the forecast calendar looked at.
@@ -83,60 +85,66 @@ function messageContent(message, ttl = TTL.message) {
 const levelColor = (level) => LEVEL_COLORS[level] ?? 'neutral';
 
 /**
- * @description The card of a road event.
+ * @description The card of a road event. The cards form a grid whose titles
+ * the core keeps on one line: the title is the road alone, the category is
+ * the badge (neutral while planned), the place or the planned day the
+ * subtitle. Everything else waits in the detail the core opens on a tap.
  * @param {object} event - The event of a place.
  * @param {string} language - The language.
  * @param {string} [timeZone] - IANA timezone.
  * @returns {object} A card-list item.
  */
 function eventCard(event, language, timeZone) {
-  const title = [event.road, categoryLabel(event.category, language)].filter(Boolean).join(' · ');
-  const lines = [];
+  const category = categoryLabel(event.category, language);
+  const planned = event.status === 'planned';
+  const where = [event.town, formatDistance(event.distance, language)].filter(Boolean).join(' · ');
+  // A grid column holds about twenty characters: the planned day alone.
+  const subtitle =
+    planned && event.start
+      ? t('widgetPlannedOn', language, { date: shortDate(event.start, language, timeZone) })
+      : where;
+  const facts = [];
+  if (planned && where) {
+    facts.push(where);
+  }
   if (event.direction) {
-    lines.push(event.direction);
+    facts.push(event.direction);
   }
-  if (event.description) {
-    lines.push(event.description);
+  if (event.start) {
+    facts.push(
+      t(planned ? 'widgetFrom' : 'widgetSince', language, {
+        date: longDateTime(event.start, language, timeZone),
+      }),
+    );
   }
+  facts.push(
+    event.end
+      ? t('widgetUntil', language, { date: longDateTime(event.end, language, timeZone) })
+      : t('widgetNoEnd', language),
+  );
   if (event.period) {
-    lines.push(event.period);
+    facts.push(event.period);
   }
   if (event.queueLength) {
-    lines.push(
+    facts.push(
       t('widgetQueue', language, { length: formatDistance(event.queueLength / 1000, language) }),
     );
   }
-  if (event.status === 'planned' && event.start) {
-    lines.push(t('widgetFrom', language, { date: shortDateTime(event.start, language, timeZone) }));
-  }
-  if (event.end) {
-    lines.push(t('widgetUntil', language, { date: shortDateTime(event.end, language, timeZone) }));
-  }
-  if (event.source) {
-    lines.push(event.source);
-  }
-  const subtitle = [event.town, formatDistance(event.distance, language)]
-    .filter(Boolean)
-    .join(' · ');
+  // The core keeps the line breaks of a description: a blank line between the
+  // facts, the operator's words and the source.
+  const blocks = [
+    facts.join('\n'),
+    event.description,
+    event.source && t('widgetSource', language, { source: event.source }),
+  ].filter(Boolean);
   return {
-    title: clip(title, 60),
+    title: clip(event.road || category, 60),
     subtitle: clip(subtitle, 60),
-    badge:
-      event.status === 'planned'
-        ? {
-            text: clip(
-              t('widgetPlannedBadge', language, {
-                date: shortDate(event.start, language, timeZone),
-              }),
-              16,
-            ),
-            color: 'neutral',
-          }
-        : {
-            text: clip(categoryLabel(event.category, language), 16),
-            color: CATEGORY_COLORS[event.category],
-          },
-    ...(lines.length ? { description: clip(lines.join('\n'), 2000) } : {}),
+    badge: {
+      text: clip(category, 16),
+      color: planned ? 'neutral' : CATEGORY_COLORS[event.category],
+    },
+    description: clip(blocks.join('\n\n'), 2000),
   };
 }
 
@@ -178,7 +186,9 @@ function buildTrafficWidget({ place, zone, readAt, publishedAt, language, timeZo
     .slice(0, MAX_CARDS)
     .map((event) => eventCard(event, language, timeZone));
   if (items.length) {
-    components.push({ type: 'card-list', display: 'list', items });
+    // A grid: a list stacks every line on the left and leaves the card's
+    // width empty.
+    components.push({ type: 'card-list', display: 'grid', items });
   } else {
     components.push({
       type: 'text',
@@ -218,6 +228,33 @@ function buildTrafficWidget({ place, zone, readAt, publishedAt, language, timeZo
  * @returns {object} The tile.
  */
 const tile = (label, value, color) => ({ type: 'value', label: clip(label, 24), value, color });
+
+/**
+ * @description The card of a coloured day, in a grid like the road events:
+ * the short day as title, the worst level of the day as the badge (its color
+ * never contradicts the day), the directions that reach it as subtitle; both
+ * levels in the detail.
+ * @param {{ date: string, departure: number, return: number }} day - A coloured day.
+ * @param {string} language - The language.
+ * @returns {object} A card-list item.
+ */
+function forecastCard(day, language) {
+  const level = worst(day);
+  let directions = 'both';
+  if (day.departure !== day.return) {
+    directions = day.departure === level ? 'departure' : 'return';
+  }
+  return {
+    title: clip(shortDay(day.date, language), 60),
+    subtitle: clip(t(`widgetDay_${directions}`, language), 60),
+    badge: { text: clip(levelLabel(level, language), 16), color: levelColor(level) },
+    description: t('widgetDayDetail', language, {
+      day: fullDay(day.date, language),
+      departure: levelLabel(day.departure, language).toLowerCase(),
+      return: levelLabel(day.return, language).toLowerCase(),
+    }),
+  };
+}
 
 /**
  * @description The forecast widget of a place.
@@ -265,21 +302,8 @@ function buildForecastWidget({
   if (coloured.length) {
     components.push({
       type: 'card-list',
-      display: 'list',
-      items: coloured.slice(0, MAX_CARDS).map((day) => ({
-        title: clip(
-          t('widgetDayTitle', language, {
-            departure: levelLabel(day.departure, language).toLowerCase(),
-            return: levelLabel(day.return, language).toLowerCase(),
-          }),
-          60,
-        ),
-        date: displayInstant(day.date),
-        badge: {
-          text: clip(weekday(day.date, language), 16),
-          color: levelColor(worst(day)),
-        },
-      })),
+      display: 'grid',
+      items: coloured.slice(0, MAX_CARDS).map((day) => forecastCard(day, language)),
     });
   } else {
     components.push({
