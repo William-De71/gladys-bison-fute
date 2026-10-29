@@ -1,6 +1,6 @@
 {
   "name": "gladys-bison-fute",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": true,
   "description": "External Gladys Assistant integration for Bison Futé: road events (closures, accidents, traffic jams, roadworks) around your home on the French national road network, and the green/orange/red/black traffic forecasts of your department, with scenes and dashboard widgets.",
   "homepage": "https://github.com/William-De71/gladys-bison-fute",
